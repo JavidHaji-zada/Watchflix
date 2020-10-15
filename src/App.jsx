@@ -40,11 +40,13 @@ export class App extends Component {
 					{/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
 					<Switch>
-						<Route path="proposal-new.pdf">
+						<Route path="/proposal.pdf">
 							{/* <About /> */}
 							<Proposal />
 						</Route>
-						<Route path="/users">{/* <Users /> */}</Route>
+						<Route path="/users">
+							<Users />
+						</Route>
 						<Route path="/">
 							<Home />
 						</Route>
@@ -53,6 +55,10 @@ export class App extends Component {
 			</Router>
 		);
 	}
+}
+
+function Users() {
+	return <h2>Users</h2>;
 }
 
 export default App;

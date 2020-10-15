@@ -10,7 +10,7 @@ export class reports extends Component {
 					</div>
 					<div className="row">
 						<div className="col-xs-6 col-md-3">
-            <a href="/proposal.pdf">Link To Our Project Proposal</a>
+							<a href="proposal.pdf">Link To Our Project Proposal</a>
 						</div>
 					</div>
 				</div>
