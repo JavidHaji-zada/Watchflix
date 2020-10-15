@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/Watchflix/static/css/main.69eda509.chunk.css",
-    "main.js": "/Watchflix/static/js/main.8ff1ef72.chunk.js",
-    "main.js.map": "/Watchflix/static/js/main.8ff1ef72.chunk.js.map",
+    "main.js": "/Watchflix/static/js/main.d44b8553.chunk.js",
+    "main.js.map": "/Watchflix/static/js/main.d44b8553.chunk.js.map",
     "runtime-main.js": "/Watchflix/static/js/runtime-main.349f671f.js",
     "runtime-main.js.map": "/Watchflix/static/js/runtime-main.349f671f.js.map",
     "static/js/2.7c35494e.chunk.js": "/Watchflix/static/js/2.7c35494e.chunk.js",
     "static/js/2.7c35494e.chunk.js.map": "/Watchflix/static/js/2.7c35494e.chunk.js.map",
     "index.html": "/Watchflix/index.html",
-    "precache-manifest.853e673fc953720d660ee5f891a763d7.js": "/Watchflix/precache-manifest.853e673fc953720d660ee5f891a763d7.js",
+    "precache-manifest.a59e76dd947b97b0188518ae85face97.js": "/Watchflix/precache-manifest.a59e76dd947b97b0188518ae85face97.js",
     "service-worker.js": "/Watchflix/service-worker.js",
     "static/css/main.69eda509.chunk.css.map": "/Watchflix/static/css/main.69eda509.chunk.css.map",
     "static/js/2.7c35494e.chunk.js.LICENSE.txt": "/Watchflix/static/js/2.7c35494e.chunk.js.LICENSE.txt",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.349f671f.js",
     "static/js/2.7c35494e.chunk.js",
     "static/css/main.69eda509.chunk.css",
-    "static/js/main.8ff1ef72.chunk.js"
+    "static/js/main.d44b8553.chunk.js"
   ]
 }
