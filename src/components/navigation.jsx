@@ -18,7 +18,7 @@ export class Navigation extends Component {
               <span className="icon-bar"></span>{" "}
               <span className="icon-bar"></span>{" "}
             </button>
-            <a className="navbar-brand page-scroll" href="#page-top">
+            <a className="navbar-brand page-scroll" href="./#page-top">
               Watchflix
             </a>{" "}
           </div>
@@ -29,17 +29,17 @@ export class Navigation extends Component {
           >
             <ul className="nav navbar-nav navbar-right">
               <li>
-                <a href="#features" className="page-scroll">
-                  Features
+                <a href="./#reports" className="page-scroll">
+                  Reports
                 </a>
               </li>
               <li>
-                <a href="#about" className="page-scroll">
+                <a href="./#about" className="page-scroll">
                   About
                 </a>
               </li>
               <li>
-                <a href="#team" className="page-scroll">
+                <a href="./#team" className="page-scroll">
                   Team
                 </a>
               </li>
