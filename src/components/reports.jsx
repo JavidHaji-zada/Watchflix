@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export class reports extends Component {
 	render() {
@@ -10,7 +11,7 @@ export class reports extends Component {
 					</div>
 					<div className="row">
 						<div className="col-xs-6 col-md-3">
-							<a href="proposal.pdf">Link To Our Project Proposal</a>
+							<Link to="/#/proposal">Link to our Project Proposal</Link>
 						</div>
 					</div>
 				</div>

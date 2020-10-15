@@ -25,7 +25,7 @@ export class Home extends Component {
 				<div>
 					<div>
 						<Header data={this.state.landingPageData.Header} />
-						<Reports />
+						{/* <Reports /> */}
 						<About data={this.state.landingPageData.About} />
 						<Team data={this.state.landingPageData.Team} />
 					</div>

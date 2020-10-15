@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Navigation from "./components/navigation";
 import Header from "./components/header";
 import Reports from "./components/reports";
@@ -30,6 +30,20 @@ export class App extends Component {
 			<Router>
 				<div>
 					<Navigation />
+					<div>
+						{/* <ul>
+							<li>
+								<Link to="/">Home</Link>
+							</li>
+							<li>
+								<Link to="/proposal">About</Link>
+							</li>
+						</ul> */}
+						<Switch>
+							<Route path="/proposal" component={Proposal}></Route>
+							<Route path="/" component={Home}></Route>
+						</Switch>
+					</div>
 					{/* <div>
 						<Navigation />
 						<Header data={this.state.landingPageData.Header} />
@@ -39,18 +53,6 @@ export class App extends Component {
 					</div> */}
 					{/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-					<Switch>
-						<Route path="/proposal.pdf">
-							{/* <About /> */}
-							<Proposal />
-						</Route>
-						<Route path="/users">
-							<Users />
-						</Route>
-						<Route path="/">
-							<Home />
-						</Route>
-					</Switch>
 				</div>
 			</Router>
 		);
