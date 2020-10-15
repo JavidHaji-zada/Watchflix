@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "e7d39b339c32e3f3ad6de9c50af9b3dd",
+    "revision": "2f787849f5d2dc8fd71195881eac9d6c",
     "url": "/Watchflix/index.html"
   },
   {
-    "revision": "dab446aa193c8df48d22",
+    "revision": "1f45ac9abcc9cef4e125",
     "url": "/Watchflix/static/css/main.69eda509.chunk.css"
   },
   {
-    "revision": "a1dd7e34205e95ac0094",
-    "url": "/Watchflix/static/js/2.7c35494e.chunk.js"
+    "revision": "9babb051cd9e265548a4",
+    "url": "/Watchflix/static/js/2.f7c1ab4b.chunk.js"
   },
   {
     "revision": "c64c486544348f10a6d6c716950bc223",
-    "url": "/Watchflix/static/js/2.7c35494e.chunk.js.LICENSE.txt"
+    "url": "/Watchflix/static/js/2.f7c1ab4b.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "dab446aa193c8df48d22",
-    "url": "/Watchflix/static/js/main.ecf0a845.chunk.js"
+    "revision": "1f45ac9abcc9cef4e125",
+    "url": "/Watchflix/static/js/main.35cafd15.chunk.js"
   },
   {
     "revision": "558956eaf080696f26b5",
