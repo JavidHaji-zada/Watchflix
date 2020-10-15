@@ -1,22 +1,23 @@
 {
   "files": {
     "main.css": "/Watchflix/static/css/main.69eda509.chunk.css",
-    "main.js": "/Watchflix/static/js/main.85f498bf.chunk.js",
-    "main.js.map": "/Watchflix/static/js/main.85f498bf.chunk.js.map",
+    "main.js": "/Watchflix/static/js/main.304208d8.chunk.js",
+    "main.js.map": "/Watchflix/static/js/main.304208d8.chunk.js.map",
     "runtime-main.js": "/Watchflix/static/js/runtime-main.349f671f.js",
     "runtime-main.js.map": "/Watchflix/static/js/runtime-main.349f671f.js.map",
-    "static/js/2.45f6f542.chunk.js": "/Watchflix/static/js/2.45f6f542.chunk.js",
-    "static/js/2.45f6f542.chunk.js.map": "/Watchflix/static/js/2.45f6f542.chunk.js.map",
+    "static/js/2.7c35494e.chunk.js": "/Watchflix/static/js/2.7c35494e.chunk.js",
+    "static/js/2.7c35494e.chunk.js.map": "/Watchflix/static/js/2.7c35494e.chunk.js.map",
     "index.html": "/Watchflix/index.html",
-    "precache-manifest.9df0af98187383198e42d4605f5c3cfe.js": "/Watchflix/precache-manifest.9df0af98187383198e42d4605f5c3cfe.js",
+    "precache-manifest.facca910262539ad07e8679dc5d38e40.js": "/Watchflix/precache-manifest.facca910262539ad07e8679dc5d38e40.js",
     "service-worker.js": "/Watchflix/service-worker.js",
     "static/css/main.69eda509.chunk.css.map": "/Watchflix/static/css/main.69eda509.chunk.css.map",
-    "static/js/2.45f6f542.chunk.js.LICENSE.txt": "/Watchflix/static/js/2.45f6f542.chunk.js.LICENSE.txt"
+    "static/js/2.7c35494e.chunk.js.LICENSE.txt": "/Watchflix/static/js/2.7c35494e.chunk.js.LICENSE.txt",
+    "static/media/proposal.pdf": "/Watchflix/static/media/proposal.e31a3f9c.pdf"
   },
   "entrypoints": [
     "static/js/runtime-main.349f671f.js",
-    "static/js/2.45f6f542.chunk.js",
+    "static/js/2.7c35494e.chunk.js",
     "static/css/main.69eda509.chunk.css",
-    "static/js/main.85f498bf.chunk.js"
+    "static/js/main.304208d8.chunk.js"
   ]
 }
