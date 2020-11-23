@@ -1,23 +1,31 @@
 {
   "files": {
     "main.css": "/Watchflix/static/css/main.69eda509.chunk.css",
-    "main.js": "/Watchflix/static/js/main.35cafd15.chunk.js",
-    "main.js.map": "/Watchflix/static/js/main.35cafd15.chunk.js.map",
-    "runtime-main.js": "/Watchflix/static/js/runtime-main.349f671f.js",
-    "runtime-main.js.map": "/Watchflix/static/js/runtime-main.349f671f.js.map",
-    "static/js/2.f7c1ab4b.chunk.js": "/Watchflix/static/js/2.f7c1ab4b.chunk.js",
-    "static/js/2.f7c1ab4b.chunk.js.map": "/Watchflix/static/js/2.f7c1ab4b.chunk.js.map",
+    "main.js": "/Watchflix/static/js/main.6633edbc.chunk.js",
+    "main.js.map": "/Watchflix/static/js/main.6633edbc.chunk.js.map",
+    "runtime-main.js": "/Watchflix/static/js/runtime-main.f540e70f.js",
+    "runtime-main.js.map": "/Watchflix/static/js/runtime-main.f540e70f.js.map",
+    "static/css/2.437d98bc.chunk.css": "/Watchflix/static/css/2.437d98bc.chunk.css",
+    "static/js/2.cb6e0588.chunk.js": "/Watchflix/static/js/2.cb6e0588.chunk.js",
+    "static/js/2.cb6e0588.chunk.js.map": "/Watchflix/static/js/2.cb6e0588.chunk.js.map",
     "index.html": "/Watchflix/index.html",
-    "precache-manifest.969cdb8bc709f53c159909655b391d99.js": "/Watchflix/precache-manifest.969cdb8bc709f53c159909655b391d99.js",
+    "precache-manifest.953ee8f7d34beff5d00fa07e4ae2a295.js": "/Watchflix/precache-manifest.953ee8f7d34beff5d00fa07e4ae2a295.js",
     "service-worker.js": "/Watchflix/service-worker.js",
+    "static/css/2.437d98bc.chunk.css.map": "/Watchflix/static/css/2.437d98bc.chunk.css.map",
     "static/css/main.69eda509.chunk.css.map": "/Watchflix/static/css/main.69eda509.chunk.css.map",
-    "static/js/2.f7c1ab4b.chunk.js.LICENSE.txt": "/Watchflix/static/js/2.f7c1ab4b.chunk.js.LICENSE.txt",
+    "static/js/2.cb6e0588.chunk.js.LICENSE.txt": "/Watchflix/static/js/2.cb6e0588.chunk.js.LICENSE.txt",
+    "static/media/anar.jpeg": "/Watchflix/static/media/anar.4117ab05.jpeg",
+    "static/media/design.pdf": "/Watchflix/static/media/design.6526715b.pdf",
+    "static/media/javid.jpeg": "/Watchflix/static/media/javid.858bb308.jpeg",
+    "static/media/leylah.jpeg": "/Watchflix/static/media/leylah.d6ef3311.jpeg",
+    "static/media/leylai.jpeg": "/Watchflix/static/media/leylai.0da26d82.jpeg",
     "static/media/proposal.pdf": "/Watchflix/static/media/proposal.e31a3f9c.pdf"
   },
   "entrypoints": [
-    "static/js/runtime-main.349f671f.js",
-    "static/js/2.f7c1ab4b.chunk.js",
+    "static/js/runtime-main.f540e70f.js",
+    "static/css/2.437d98bc.chunk.css",
+    "static/js/2.cb6e0588.chunk.js",
     "static/css/main.69eda509.chunk.css",
-    "static/js/main.35cafd15.chunk.js"
+    "static/js/main.6633edbc.chunk.js"
   ]
 }
