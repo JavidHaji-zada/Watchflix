@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import colors from '../../shared/colors';
+import colors from '../../../shared/colors';
 const container: CSSProperties = {
     flexDirection: 'row',
     display: 'flex',

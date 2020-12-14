@@ -12,3 +12,7 @@ export default {
         porcelain: '#F1F3F4'
     }
 }
+
+export const APP_COLORS = {
+    red: '#660000'
+}

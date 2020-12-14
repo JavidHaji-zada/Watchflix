@@ -1,6 +1,6 @@
 import React from "react";
-import design from "../../assets/reports/design.pdf";
-import proposal from "../../assets/reports/proposal.pdf";
+import design from "../../../assets/reports/design.pdf";
+import proposal from "../../../assets/reports/proposal.pdf";
 
 function Reports() {
 	return (
