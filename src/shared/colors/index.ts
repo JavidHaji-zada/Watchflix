@@ -14,5 +14,8 @@ export default {
 }
 
 export const APP_COLORS = {
-    red: '#660000'
+    red: '#660000',
+    darkGray:'#444444',
+    inputBorderGray: '#CED4DA',
+    inputPlaceholder:'#6C757D'
 }
