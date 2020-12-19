@@ -157,12 +157,12 @@ function Register(): JSX.Element {
             }
             case 3: {
                 return (
-                    <div style={{ width: '100%', padding: 20 }}>
+                    <div style={{ width: '60%', padding: 20 }}>
                         <p>Choose your preferences</p>
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {
                                 genreStates.map(({ genre, checked }, index) => (
-                                    <Form.Group style={{ maxWidth: '33%', minWidth: '20%' }} controlId="formBasicCheckbox">
+                                    <Form.Group style={{ flex: 1, margin: 20, maxWidth: '33%', minWidth: '20%' }} controlId="formBasicCheckbox">
                                         <Form.Check checked={checked} type="checkbox" label={genre.name} onClick={() => {
                                             genreStates[index].checked = !genreStates[index].checked
                                             console.log('genre states ', genreStates)
