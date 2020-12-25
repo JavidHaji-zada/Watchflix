@@ -3,6 +3,7 @@ import { Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
 
 import { APP_STYLES } from "../../../../shared/styles";
 import MainHeader from "./main-header";
+import Friends from "./friends-page";
 
 export type MainState = "default" | "series" | "movies" | "friends" | "groups";
 
@@ -16,8 +17,9 @@ function Main(): JSX.Element {
         <div style={{ color: "white" }}>I am default case</div>
       )}
       {state == "friends" && (
-        <div style={{ color: "white" }}>I am friends case</div>
-      )}
+        <div style={styles.container}>  
+        <Friends />
+        </div>      )}
       {state == "series" && (
         <div style={{ color: "white" }}>I am series case</div>
       )}
