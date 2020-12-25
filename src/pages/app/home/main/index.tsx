@@ -4,6 +4,7 @@ import { Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
 import { APP_STYLES } from "../../../../shared/styles";
 import MainHeader from "./main-header";
 import Friends from "./friends-page";
+import Channels from "./channels";
 
 export type MainState = "default" | "series" | "movies" | "friends" | "groups";
 
@@ -14,12 +15,14 @@ function Main(): JSX.Element {
     <div style={{ ...styles.container, flexDirection: "column" }}>
       <MainHeader changeState={setState} />
       {state == "default" && (
-        <div style={{ color: "white" }}>I am default case</div>
+        <div style={styles.container}>
+          <Channels />
+        </div>
       )}
       {state == "friends" && (
-        <div style={styles.container}>  
-        <Friends />
-        </div>      )}
+        <div style={styles.container}>
+          <Friends />
+        </div>)}
       {state == "series" && (
         <div style={{ color: "white" }}>I am series case</div>
       )}
