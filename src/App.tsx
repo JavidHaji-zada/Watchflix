@@ -9,6 +9,7 @@ import Proposal from "./pages/landing/reports/proposal";
 import Home from "./pages/app/home";
 import Login from "./pages/app/login";
 import Register from "./pages/app/register";
+import MovieDetails from "./pages/app/home/main/product-details";
 
 function App(): JSX.Element {
 	return (
@@ -17,6 +18,10 @@ function App(): JSX.Element {
 				<Route
 					excat path='/app'
 					component={Home}
+				/>
+				<Route
+					exact path='/browse/:id'
+					component={MovieDetails}
 				/>
 				<Route
 					excat path='/login'
