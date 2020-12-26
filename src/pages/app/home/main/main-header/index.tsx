@@ -78,7 +78,15 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
           >
             Join Group
           </Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Log out</Dropdown.Item>
+          <Dropdown.Item
+            href="#/action-3"
+            onClick={() => {
+              changeState("profile");
+            }}
+          >
+            Profile
+          </Dropdown.Item>
+          <Dropdown.Item href="#/action-4">Log out</Dropdown.Item>
         </DropdownButton>
         <Button style={styles.nameButton}>Icon</Button>
       </div>
