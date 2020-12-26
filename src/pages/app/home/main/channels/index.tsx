@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { Col, Form, InputGroup, Button } from 'react-bootstrap';
+import { FaSearch } from "react-icons/fa";
+
 import { Channel } from '../../../../../shared/models/channel'
 import { MediaProduct } from '../../../../../shared/models/media-product';
 
@@ -6,6 +9,7 @@ function Channels(): JSX.Element {
 
     const [channels, setChannels] = useState<Channel[]>([]);
     const [lastMovie, setLastMovie] = useState<MediaProduct>();
+    const [search, setSearch] = useState('')
 
     useEffect(() => {
         // get channels
@@ -41,7 +45,29 @@ function Channels(): JSX.Element {
                                 <img style={styles.thumbnailStyle} src={lastMovie.thumbnail_url} />
                             </button>
                         </div>
-
+                        <div>
+                            <Form.Row>
+                                <Form.Group as={Col}>
+                                    <InputGroup>
+                                        <InputGroup.Prepend>
+                                            <InputGroup.Text>
+                                                <FaSearch />
+                                            </InputGroup.Text>
+                                        </InputGroup.Prepend>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Search here.."
+                                            onChange={(e) => setSearch(e.target.value)}
+                                            value={search}
+                                            onSubmit={() => {
+                                                //TODO submit
+                                            }}
+                                        />
+                                    </InputGroup>
+                                </Form.Group>
+                            </Form.Row>
+                            <Button variant='danger'>New Channel</Button>
+                        </div>
                     </div>
                 )
             }
