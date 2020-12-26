@@ -8,7 +8,7 @@ import Friends from "./friends-page";
 export type MainState = "default" | "series" | "movies" | "friends" | "groups";
 
 function Main(): JSX.Element {
-  const [state, setState] = useState<MainState>("default");
+  const [state, setState] = useState<MainState>("friends");
 
   return (
     <div style={{ ...styles.container, flexDirection: "column" }}>

@@ -2,7 +2,6 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Main from "./main";
-
 import "./home.css";
 
 function Home(): JSX.Element {
@@ -21,11 +20,11 @@ function Home(): JSX.Element {
   }
 
   return (
-    <div className="fill-window" style={styles.container}>
+    <div className="fill-window" style={styles.container  }>
       {isUserLoggedIn() ? (
         <Main />
       ) : (
-        <div>
+        <div className="container-fluid homepage-bgimage">
           <Button
             onClick={onLoginClicked}
             style={{ position: "absolute", top: 10, right: 10 }}
@@ -33,11 +32,11 @@ function Home(): JSX.Element {
           >
             Login
           </Button>
-          <div style={styles.headerContainer}>
-            <h1 style={styles.header}>Watchflix</h1>
+          <div style={styles.headerContainer }>
+            <h1 style={{...styles.headerContainer, fontWeight: "bold"} }>Watchflix</h1>
           </div>
           <div style={styles.sloganContainer}>
-            <h2 style={styles.slogan}>Watchflix and Chill</h2>
+            <h2 style={{...styles.sloganContainer, fontWeight: "bold"}}>Watchflix and Chill</h2>
           </div>
           <div
             style={{
@@ -61,29 +60,31 @@ function Home(): JSX.Element {
 const styles = {
   container: {
     display: 'flex',
-    backgroundColor: "#011627",
+    backgroundImage:'url(${background_photo})',
   },
   headerContainer: {
     width: "100%",
-    marginTop: "10%",
+    marginTop: "2%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    color: "red",
   },
   header: {
     fontSize: 32,
-    color: "white",
+    color: "red",
   },
   sloganContainer: {
     width: "100%",
-    marginTop: "4.5%",
+    marginTop: "0.5%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    color: "red",
   },
   slogan: {
     fontSize: 32,
-    color: "white",
+    color: "red",
   },
 };
 
