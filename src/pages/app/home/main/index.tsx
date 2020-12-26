@@ -5,8 +5,9 @@ import { APP_STYLES } from "../../../../shared/styles";
 import MainHeader from "./main-header";
 import Friends from "./friends-page";
 import Channels from "./channels";
+import Profile from "./profile";
 
-export type MainState = "default" | "series" | "movies" | "friends" | "groups";
+export type MainState = "default" | "series" | "movies" | "friends" | "groups" | "profile";
 
 function Main(): JSX.Element {
   const [state, setState] = useState<MainState>("default");
@@ -32,6 +33,13 @@ function Main(): JSX.Element {
       {state == "groups" && (
         <div style={{ color: "white" }}>I am group case</div>
       )}
+      {
+        state == 'profile' && (
+          <div style={styles.container}>
+            <Profile />
+          </div>
+        )
+      }
     </div>
   );
 }
