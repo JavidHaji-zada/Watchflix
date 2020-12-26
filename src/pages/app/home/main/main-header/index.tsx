@@ -19,18 +19,20 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
       }}
     >
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <h1
-          style={{
-            ...APP_STYLES.headerStyle,
-            fontWeight: "bold",
-            height: 40,
-          }}
-          onClick={() => {
-            changeState("default");
-          }}
-        >
-          Watchflix
+        <button style={{ outline: 'none', backgroundColor: 'transparent', borderWidth: 0 }}>
+          <h1
+            style={{
+              ...APP_STYLES.headerStyle,
+              fontWeight: "bold",
+              height: 40,
+            }}
+            onClick={() => {
+              changeState("default");
+            }}
+          >
+            Watchflix
         </h1>
+        </button>
         <Button
           style={styles.button}
           onClick={() => {
@@ -63,7 +65,7 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
           title="Example Examplino" /** TODO: change into user.fullname */
         >
           <Dropdown.Item
-            href="#/action-1"
+            href="#/friends"
             onClick={() => {
               changeState("friends");
             }}
@@ -71,7 +73,7 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
             My friends
           </Dropdown.Item>
           <Dropdown.Item
-            href="#/action-2"
+            href="#/groups"
             onClick={() => {
               changeState("groups");
             }}
@@ -79,14 +81,14 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
             Join Group
           </Dropdown.Item>
           <Dropdown.Item
-            href="#/action-3"
+            href="#/profile"
             onClick={() => {
               changeState("profile");
             }}
           >
             Profile
           </Dropdown.Item>
-          <Dropdown.Item href="#/action-4">Log out</Dropdown.Item>
+          <Dropdown.Item>Log out</Dropdown.Item>
         </DropdownButton>
         <Button style={styles.nameButton}>Icon</Button>
       </div>

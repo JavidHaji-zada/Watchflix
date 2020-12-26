@@ -72,15 +72,9 @@ function Profile(): JSX.Element {
           alignItems: "center",
         }}
       >
-        <button
-          style={{
-            marginLeft: 12,
-            border: 0,
-            backgroundColor: APP_COLORS.lightRed,
-          }}
-        >
-          <p style={{ color: "white" }}>Save Changes</p>
-        </button>
+        <Button variant='danger'>
+          <p style={{ color: "white", margin: 0 }}>Save Changes</p>
+        </Button>
       </div>
     </div>
   );
