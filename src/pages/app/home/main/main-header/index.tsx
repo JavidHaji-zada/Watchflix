@@ -88,7 +88,6 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
           </Dropdown.Item>
           <Dropdown.Item href="#/action-4">Log out</Dropdown.Item>
         </DropdownButton>
-        <Button style={styles.nameButton}>Icon</Button>
       </div>
     </div>
   );

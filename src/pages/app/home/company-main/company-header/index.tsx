@@ -31,22 +31,6 @@ function CompanyHeader(props: CompanyHeaderProps): JSX.Element {
         >
           Watchflix
         </h1>
-        <Button
-          style={styles.button}
-          onClick={() => {
-            changeState("series");
-          }}
-        >
-          <u>Series</u>
-        </Button>
-        <Button
-          style={styles.button}
-          onClick={() => {
-            changeState("movies");
-          }}
-        >
-          <u>Movies</u>
-        </Button>
         
       </div>
       <div
@@ -66,22 +50,20 @@ function CompanyHeader(props: CompanyHeaderProps): JSX.Element {
           <Dropdown.Item
             href="#/action-1"
             onClick={() => {
-              //changeState("friends");
+              changeState("profile");
             }}
           >
-            My friends
+            Profile
           </Dropdown.Item>
           <Dropdown.Item
             href="#/action-2"
             onClick={() => {
-              //changeState("groups");
+              changeState("log_out");
             }}
           >
-            Join Group
+            Log out
           </Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Log out</Dropdown.Item>
         </DropdownButton>
-        <Button style={styles.nameButton}>Icon</Button>
       </div>
     </div>
   );

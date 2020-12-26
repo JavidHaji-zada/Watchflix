@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import Default from "./company-default";
 
 import CompanyHeader from "./company-header";
+import Profile from "./profile-page";
 
 export type CompanyMainState =
   | "default"
-  | "movies"
-  | "series"
   | "upload"
-  | "search";
+  | "search"
+  | "profile"
+  | "log_out";
 function MainCompany(): JSX.Element {
   const [state, setState] = useState<CompanyMainState>("default");
 
@@ -26,14 +27,10 @@ function MainCompany(): JSX.Element {
       {state == "default" && (
         <div style={styles.container}><Default/></div>
       )}
-      {state == "movies" && (
-        <div style={{ color: "white" }}> I am sea case </div>
-      )}
-      {state == "series" && (
-        <div style={{ color: "white" }}> I am sea case </div>
-      )}
       {state == "upload" && <div style={styles.container}>Here is upload</div>}
       {state == "search" && <div style={{ color: "white" }}>I am sea case</div>}
+      {state == "profile" && <div style={styles.container}><Profile/></div>}
+      {state == "log_out" && <div style={{ color: "white" }}>I am sea case</div>}
     </div>
   );
 }
