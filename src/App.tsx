@@ -9,6 +9,7 @@ import Proposal from "./pages/landing/reports/proposal";
 import Home from "./pages/app/home";
 import Login from "./pages/app/login";
 import Register from "./pages/app/register";
+import Channel from "./pages/app/channel";
 
 function App(): JSX.Element {
 	return (
@@ -25,6 +26,10 @@ function App(): JSX.Element {
 				<Route
 					excat path='/register'
 					component={Register}
+				/>
+				<Route
+					excat path='/channel/:id'
+					component={Channel}
 				/>
 				<Route path=''>
 					<Header />

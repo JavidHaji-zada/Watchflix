@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Form, InputGroup, Button } from 'react-bootstrap';
 import { FaSearch } from "react-icons/fa";
+import { useHistory } from 'react-router-dom';
 
 import { Channel } from '../../../../../shared/models/channel'
 import { MediaProduct } from '../../../../../shared/models/media-product';
 
 function Channels(): JSX.Element {
+    const history = useHistory();
 
     const [channels, setChannels] = useState<Channel[]>([]);
     const [lastMovie, setLastMovie] = useState<MediaProduct>();
@@ -27,7 +29,7 @@ function Channels(): JSX.Element {
     console.log('channels ', channels)
 
     function onChannelPressed(channel: Channel): void {
-
+        history.replace(`/channel/${channel._id}`)
     }
 
     function onMoviePressed(media: MediaProduct): void {
