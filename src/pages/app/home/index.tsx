@@ -2,6 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Main from "./main";
+import MainCompany from "./company-main";
 import "./home.css";
 
 function Home(): JSX.Element {
@@ -19,10 +20,14 @@ function Home(): JSX.Element {
     return true;
   }
 
+  function isCompanyUser(): boolean {
+    return true;
+  }
+
   return (
     <div className="fill-window" style={styles.container  }>
-      {isUserLoggedIn() ? (
-        <Main />
+      {isUserLoggedIn() ? (( isCompanyUser() ? (< MainCompany />) : (<Main />))
+        
       ) : (
         <div className="container-fluid homepage-bgimage">
           <Button
