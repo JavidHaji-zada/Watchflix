@@ -6,6 +6,8 @@ import MainHeader from "./main-header";
 import Friends from "./friends-page";
 import Channels from "./channels";
 import Profile from "./profile";
+import Movie from "./movie-page";
+import Series from "./series-page";
 
 export type MainState = "default" | "series" | "movies" | "friends" | "groups" | "profile";
 
@@ -25,10 +27,10 @@ function Main(): JSX.Element {
           <Friends />
         </div>)}
       {state == "series" && (
-        <div style={{ color: "white" }}>I am series case</div>
+        <div style={{ color: "white" }}><Series/></div>
       )}
       {state == "movies" && (
-        <div style={{ color: "white" }}>I am movies case</div>
+        <div style={{ color: "white" }}><Movie/></div>
       )}
       {state == "groups" && (
         <div style={{ color: "white" }}>I am group case</div>
