@@ -1,0 +1,3 @@
+export const SQL_STATEMENTS = [
+	"CREATE TABLE User (username VARCHAR(16) UNIQUE NOT NULL, email	VARCHAR(60) NOT NULL, password VARCHAR(12) NOT NULL, fullname VARCHAR(40) NOT NULL, b-date DATE NOT NULL, PRIMARY KEY(username))",
+];
