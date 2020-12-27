@@ -10,6 +10,8 @@ import Home from "./pages/app/home";
 import Login from "./pages/app/login";
 import Register from "./pages/app/register";
 import Channel from "./pages/app/channel";
+import MovieDetails from "./pages/app/home/main/product-details";
+import Watch from "./pages/app/home/main/watch";
 
 function App(): JSX.Element {
 	return (
@@ -18,6 +20,14 @@ function App(): JSX.Element {
 				<Route
 					excat path='/app'
 					component={Home}
+				/>
+				<Route
+					exact path='/browse/:id'
+					component={MovieDetails}
+				/>
+				<Route
+					exact path='/watch/:id'
+					component={Watch}
 				/>
 				<Route
 					excat path='/login'
