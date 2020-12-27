@@ -5,7 +5,7 @@ import { MediaProduct } from "../../../../../shared/models/media-product";
 import { Comment } from "../../../../../shared/models/comment";
 import { APP_COLORS } from "../../../../../shared/colors";
 import { useHistory } from "react-router-dom";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form,  Dropdown, DropdownButton } from "react-bootstrap";
 
 function MovieDetails(props: any): JSX.Element {
   const [movie, setMovie] = useState<MediaProduct>();
@@ -14,7 +14,7 @@ function MovieDetails(props: any): JSX.Element {
   const history = useHistory();
   useEffect(() => {
     let movie = new MediaProduct({
-      _id: "23",
+      _id: props.match.params.id,
       score: 3,
       release_date: new Date(),
       name: "Panda 2",
@@ -118,6 +118,10 @@ function MovieDetails(props: any): JSX.Element {
   function commentMovie() {
     //Comment
   }
+  function createGroup()
+  {
+    //create Group
+  }
   function renderInner(): JSX.Element {
     return (
       <div
@@ -190,9 +194,28 @@ function MovieDetails(props: any): JSX.Element {
             justifyContent: "flex-end",
           }}
         >
-          <Button style={styles.nextButton} onClick={watch} variant="danger">
-            Watch
-          </Button>
+        <DropdownButton
+          variant="danger"
+          className=".transparent-button"
+          style={styles.nameButton}
+          id="dropdown-basic-button"
+          title="Start Watching" /** TODO: change into user.fullname */
+        >
+          <Dropdown.Item
+            onClick={() => {
+              watch();
+            }}
+          >
+            Start
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => {
+              createGroup();
+            }}
+          >
+            Create Group
+          </Dropdown.Item>
+        </DropdownButton>
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Form.Group controlId="formBasicEmail" style={{ margin: 20 }}>
@@ -276,6 +299,22 @@ const styles = {
     width: "25%",
     minWidth: 240,
     margin: 20,
+  },
+  button: {
+    alignSelf: "flex-start",
+    backgroundColor: "transparent",
+    borderWidth: 0,
+    textDecoration: "underline",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+  },
+  nameButton: {
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    margin:20
   },
 };
 
