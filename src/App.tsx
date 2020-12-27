@@ -12,6 +12,7 @@ import Register from "./pages/app/register";
 import Channel from "./pages/app/channel";
 import MovieDetails from "./pages/app/home/main/product-details";
 import Watch from "./pages/app/home/main/watch";
+import Suggestions from "./pages/app/suggestions";
 
 function App(): JSX.Element {
 	return (
@@ -41,6 +42,7 @@ function App(): JSX.Element {
 					excat path='/channel/:id'
 					component={Channel}
 				/>
+				<Route exact path="/channel/:id/suggestions" component={Suggestions} />
 				<Route path=''>
 					<Header />
 					<About />
@@ -51,5 +53,4 @@ function App(): JSX.Element {
 		</Router>
 	);
 }
-
 export default App;
