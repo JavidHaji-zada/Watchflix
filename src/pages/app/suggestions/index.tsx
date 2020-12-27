@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Col, Form, InputGroup, Button } from "react-bootstrap";
 import { FaHandMiddleFinger } from "react-icons/fa";
-import "./channel.css";
 import { FaSearch } from "react-icons/fa";
 import { Channel } from "../../../shared/models/channel";
 import { MediaProduct } from "../../../shared/models/media-product";
@@ -9,7 +8,8 @@ import { MediaProduct } from "../../../shared/models/media-product";
 import { APP_COLORS } from "../../../shared/colors";
 import { useHistory } from "react-router-dom";
 
-function ChannelPage(props: any): JSX.Element {
+function Suggestions( props: any ): JSX.Element {
+
   const history = useHistory();
   const [channelID, setChannelID] = useState("");
   const [lastMovie, setLastMovie] = useState<MediaProduct>();
@@ -45,7 +45,6 @@ function ChannelPage(props: any): JSX.Element {
       medias: [mediaProduct1, mediaProduct2, mediaProduct3, mediaProduct3],
     });
 
-    let channelID = props.match.params.id;
     setChannelID(channelID);
     setChannelName(channel2);
     setLastMovie(mediaProduct3);
@@ -67,9 +66,11 @@ function ChannelPage(props: any): JSX.Element {
             alignItems: "flex-start",
             outline: "None",
           }}
+
           onClick={() => {
-            history.replace("/app");
+            history.replace("/channel/:id");
           }}
+        
         >
           <p
             style={{
@@ -87,27 +88,11 @@ function ChannelPage(props: any): JSX.Element {
         >
           {selfChannel?.medias.map((media) => (
             <button style={styles.button} onClick={() => onMoviePressed(media)}>
-              <img style={{ width: 128, height: 128 }} src={media.thumbnail_url } />
+              <img style={{ width: 128, height: 128 }} src={media.thumbnail_url} />
             </button>
           ))}
         </div>
-        <button
-          style={{
-            marginLeft: 12,
-            border: 0,
-            backgroundColor: "transparent",
-            display: "flex",
-            alignItems: "flex-start",
-            outline: "none",
-          }}
-          onClick={() =>
-            history.replace(`/channel/${selfChannel?._id}/suggestions`)
-          }
-        >
-          <p style={{ color: "white", textDecoration: "underline" }}>
-            {"Suggestions for " + selfChannel?.name}
-          </p>
-        </button>
+        
       </div>
     </div>
   );
@@ -143,4 +128,9 @@ const styles = {
   },
 };
 
-export default ChannelPage;
+
+
+
+
+
+export default Suggestions;

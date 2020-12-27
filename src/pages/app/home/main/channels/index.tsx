@@ -29,7 +29,7 @@ function Channels(): JSX.Element {
     console.log('channels ', channels)
 
     function onChannelPressed(channel: Channel): void {
-        history.replace(`/channel/${channel._id}`)
+        history.push(`/channel/${channel._id}`)
     }
 
     function onMoviePressed(media: MediaProduct): void {

@@ -10,36 +10,26 @@ import Home from "./pages/app/home";
 import Login from "./pages/app/login";
 import Register from "./pages/app/register";
 import Channel from "./pages/app/channel";
+import Suggestions from "./pages/app/suggestions";
 
 function App(): JSX.Element {
-	return (
-		<Router>
-			<Switch>
-				<Route
-					excat path='/app'
-					component={Home}
-				/>
-				<Route
-					excat path='/login'
-					component={Login}
-				/>
-				<Route
-					excat path='/register'
-					component={Register}
-				/>
-				<Route
-					excat path='/channel/:id'
-					component={Channel}
-				/>
-				<Route path=''>
-					<Header />
-					<About />
-					<Team />
-					<Reports />
-				</Route>
-			</Switch>
-		</Router>
-	);
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/app" component={Home} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/channel/:id" component={Channel} />
+        <Route exact path="/channel/:id/suggestions" component={Suggestions} />
+        <Route path="">
+          <Header />
+          <About />
+          <Team />
+          <Reports />
+        </Route>
+      </Switch>
+    </Router>
+  );
 }
 
 export default App;
