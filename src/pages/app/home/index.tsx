@@ -61,7 +61,7 @@ function Home(): JSX.Element {
 const styles = {
   container: {
     display: 'flex',
-    backgroundColor: "#011627",
+    backgroundColor: "#333333",
   },
   headerContainer: {
     width: "100%",

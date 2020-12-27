@@ -48,7 +48,7 @@ const styles = {
   container: {
     flex: 1,
     display: "flex",
-    backgroundColor: "#141414",
+    backgroundColor: "#333333",
     paddingLeft: 24,
     paddingRight: 24,
     paddingTop: 24,
