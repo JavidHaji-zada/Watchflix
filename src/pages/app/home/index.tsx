@@ -17,7 +17,7 @@ function Home(): JSX.Element {
   }
 
   function isUserLoggedIn(): boolean {
-    return true;
+    return false;
   }
 
   return (
