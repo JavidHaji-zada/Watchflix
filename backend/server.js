@@ -46,9 +46,9 @@ con.connect((err) => {
 // 	});
 // });
 
-// con.query(
-// 	"CREATE TABLE IF NOT EXISTS dummy (name VARCHAR(16), address VARCHAR(16))"
-// );
+con.query(
+	"CREATE TABLE IF NOT EXISTS request(username1 VARCHAR(16) NOT NULL, username2 VARCHAR(16) NOT NULL, PRIMARY KEY (username1, username2), FOREIGN KEY(username1) REFERENCES User(username), FOREIGN KEY(username2) REFERENCES User(username)) ENGINE = Innodb;"
+);
 
 app.get("/get", function (req, res) {
 	res.send({ a: "Hello World!" });
@@ -393,6 +393,146 @@ app.post("/login", (req, res) => {
 			}
 		);
 	}
+});
+
+app.post("/send_request", (req, res) => {
+	const { from, to } = req.body;
+	if (from == to) {
+		res.send({
+			code: 400,
+			failed: "Cannot add self",
+		});
+	}
+	let userCheck = "SELECT * FROM User WHERE username = ?";
+	con.query(userCheck, to, (error, result) => {
+		if (error) {
+			console.log("error friend request\n", error);
+			res.send({
+				code: 400,
+				failed: "Error while sending friend request",
+			});
+		} else if (result.length > 0) {
+			let sql = "INSERT INTO request (username1, username2) VALUES?";
+			con.query(sql, [[[from, to]]], (err, req_res) => {
+				if (err) {
+					console.log("err while adding ", err);
+					res.send({
+						code: 400,
+						failed: "Could not add friend",
+					});
+				} else {
+					res.send({
+						code: 200,
+						success: "Sent friend request",
+					});
+				}
+			});
+		} else {
+			res.send({
+				code: 403,
+				failed: "Incorrect username",
+			});
+		}
+	});
+});
+
+app.get("/sent_requests/:username", (req, res) => {
+	const { username } = req.params;
+	con.query(
+		"SELECT * FROM request WHERE username1 = ?",
+		username,
+		(error, requests) => {
+			if (error) {
+				res.send({
+					code: 400,
+					failed: "Could not get requests",
+				});
+			} else {
+				res.send({
+					code: 200,
+					success: requests,
+				});
+			}
+		}
+	);
+});
+
+app.get("/received_requests/:username", (req, res) => {
+	const { username } = req.params;
+	console.log("username ", username);
+	con.query(
+		"SELECT * FROM request WHERE username2 = ?",
+		username,
+		(error, requests) => {
+			if (error) {
+				res.send({
+					code: 400,
+					failed: "Could not get requests",
+				});
+			} else {
+				console.log("received requests ", requests);
+				res.send({
+					code: 200,
+					success: "Fetched friend requests",
+					data: requests,
+				});
+			}
+		}
+	);
+});
+
+app.get("/user/:username", (req, res) => {
+	const { username } = req.params;
+	con.query(
+		"SELECT * FROM User WHERE username = ?",
+		username,
+		(error, users) => {
+			if (!error) {
+				res.send({
+					code: 200,
+					success: "User fetched",
+					data: users[0],
+				});
+			}
+		}
+	);
+});
+
+app.post("/accept_request", (req, res) => {
+	const { username1, username2 } = req.body;
+	let values = [[[username1, username2]]];
+	con.query(
+		"DELETE FROM request WHERE username1 = ? AND username2 = ?",
+		[username1, username2],
+		(error, result) => {
+			if (error) {
+				console.log("error deletion ", error);
+				res.send({
+					code: 400,
+					failed: "Could not delete request",
+				});
+			} else {
+				con.query(
+					"INSERT INTO friend (username1, username2) VALUES?",
+					values,
+					(addErr, addRes) => {
+						if (addErr) {
+							console.log("add ", addErr);
+							res.send({
+								code: 400,
+								failed: "Could not add friend",
+							});
+						} else {
+							res.send({
+								code: 200,
+								success: "Friend request accepted!",
+							});
+						}
+					}
+				);
+			}
+		}
+	);
 });
 
 let server = app.listen(5000, function () {

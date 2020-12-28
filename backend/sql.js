@@ -20,4 +20,5 @@ module.exports.SQL_STATEMENTS = [
 	"CREATE TABLE IF NOT EXISTS rate(username VARCHAR(16) NOT NULL, m_id CHAR(12) NOT NULL, rated_score	Numeric(3,1) NOT NULL, PRIMARY KEY(m_id,username), FOREIGN KEY(username) REFERENCES User(username), FOREIGN KEY(m_id) REFERENCES MediaProduct(m_id)) ENGINE = InnoDB;",
 	"CREATE TABLE IF NOT EXISTS watch(username VARCHAR(16) NOT NULL, m_id CHAR(12) NOT NULL, watch_date DATE NOT NULL, watch_count INT, PRIMARY KEY(m_id,username), FOREIGN KEY(username) REFERENCES User(username), FOREIGN KEY(m_id) REFERENCES MediaProduct(m_id)) ENGINE = InnoDB;",
 	"CREATE TABLE IF NOT EXISTS friend(username1 VARCHAR(16) NOT NULL, username2 VARCHAR(16) NOT NULL, PRIMARY KEY (username1, username2), FOREIGN KEY(username1) REFERENCES User(username), FOREIGN KEY(username2) REFERENCES User(username)) ENGINE = Innodb;",
+	"CREATE TABLE IF NOT EXISTS request(username1 VARCHAR(16) NOT NULL, username2 VARCHAR(16) NOT NULL, PRIMARY KEY (username1, username2), FOREIGN KEY(username1) REFERENCES User(username), FOREIGN KEY(username2) REFERENCES User(username)) ENGINE = Innodb;",
 ];
