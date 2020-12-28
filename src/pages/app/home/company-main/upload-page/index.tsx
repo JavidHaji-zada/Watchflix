@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Col, Form, FormControl, InputGroup } from "react-bootstrap";
 import { EndOfLineState, isElementAccessExpression } from "typescript";
+import { CompanyMainState } from "..";
 
 import { APP_COLORS } from "../../../../../shared/colors";
 import { MediaService } from "../../../../../shared/libs/media-service";
 import { Genre } from "../../../../../shared/models/genre";
-interface MediaProps {
+import UploadEpisode from "./episode-upload";
+interface UploadProps {
   mediaProduct: string;
+  changeState: (state: CompanyMainState) => void;
 }
 function isMovie(mediatype: any): boolean {
   if (mediatype == "movie") {
@@ -19,8 +22,20 @@ type GenreState = {
   genre: Genre;
   checked: boolean;
 };
-function Upload(props: MediaProps): JSX.Element {
-  const { mediaProduct } = props;
+function Upload(props: UploadProps): JSX.Element {
+
+  const [name, setName] = useState("");
+  const [date, setRelease] = useState("");
+  const [product, setProduct] = useState("");
+  let count = 0;
+
+  const [enableButton, setButton] = useState(true);
+  const handleButton = () => setButton(
+    date == "" || name == "" || count == 0
+  );
+
+  const { mediaProduct, changeState } = props;
+
   const genres = MediaService.getGenres();
 
   const [genreStates, setGenreStates] = useState<GenreState[]>([]);
@@ -57,19 +72,28 @@ function Upload(props: MediaProps): JSX.Element {
             {isMovie(mediaProduct) ? "Movie" : "Series"} name:{" "}
           </Form.Label>
           <Col sm="8">
-            <Form.Control className="col-sm-10" type="name" />
+            <Form.Control
+              className="col-sm-10"
+              type="name"
+              onChange={(event) => setName(event.target.value)}
+              onClick = {() => {handleButton();}}
+            />
           </Col>
         </Form.Group>
 
         <Form.Group style={{ ...styles.formGroup, flexDirection: "row" }}>
-          <Form.Label
-            style={{ fontSize: 16, fontWeight: "bold" }}
-          >
+          <Form.Label style={{ fontSize: 16, fontWeight: "bold" }}>
             {" "}
             Release date:{" "}
           </Form.Label>
           <Col sm="8">
-            <Form.Control type="date" name="dob" placeholder="Date of Birth" />
+            <Form.Control
+              type="date"
+              name="dob"
+              placeholder="Date of Birth"
+              onChange={(event) => setRelease(event.target.value)}
+              onClick = {() => {handleButton();}}
+            />
           </Col>
         </Form.Group>
 
@@ -85,7 +109,14 @@ function Upload(props: MediaProps): JSX.Element {
                 type="checkbox"
                 label={genre.name}
                 onClick={() => {
+                  
                   genreStates[index].checked = !genreStates[index].checked;
+                  if (genreStates[index].checked) {
+                    count++;
+                  } else {
+                    count--;
+                  }
+                  handleButton();
                   console.log("genre states ", genreStates);
                   setGenreStates(genreStates);
                   setUpdateScreen(!updateScreen);
@@ -94,18 +125,47 @@ function Upload(props: MediaProps): JSX.Element {
             </Form.Group>
           ))}
         </div>
-        <p>You cannot choose more than three genres</p>
-        <Form.Group controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
-        <Button
-          variant="danger"
-          type="next"
-          style={{ display: "flex", alignSelf: "flex-end" }}
-        >
-          Next
-        </Button>
+        {isMovie(mediaProduct) ? (
+          <div style={{ display: "flex", flex: 1, flexDirection: "column" }}>
+            <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+              <div className="input-group-prepend">
+                <span className="input-group-text">Upload</span>
+              </div>
+              <div className="custom-file">
+                <input
+                  type="file"
+                  className="custom-file-input"
+                  id="inputGroupFile01"
+                  onChange={(event) => setProduct(event.target.value)}
+                  onClick = {() => {handleButton();}}
+                ></input>
+                <label className="custom-file-label" htmlFor="inputGroupFile01">
+                  Choose file
+                </label>
+              </div>
+            </div>
+            <Button
+              variant="danger"
+              type="submit"
+              style={{ display: "flex", alignSelf: "flex-end" }}
+              disabled={enableButton}
+            >
+              Finish
+            </Button>
+          </div>
+        ) : (
+          <Button
+            variant="danger"
+            type="next"
+            style={{ display: "flex", alignSelf: "flex-end" }}
+            disabled={enableButton}
+            onClick = {() => {changeState("episodeUpload");}}
+          >
+            Next
+          </Button>
+        )}
       </Form>
+       
     </div>
   );
 }
