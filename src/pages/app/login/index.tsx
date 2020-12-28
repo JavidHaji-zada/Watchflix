@@ -46,7 +46,7 @@ function Login(): JSX.Element {
                         <Form.Group controlId="formBasicPassword">
                             <Form.Label>Enter your password</Form.Label>
                             <Form.Control 
-                                onChange={(event) => setUsername(event.target.value)}
+                                onChange={(event) => setPassword(event.target.value)}
                                 type="text" placeholder="Username" />
                         </Form.Group>
                     </div>
@@ -58,7 +58,7 @@ function Login(): JSX.Element {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '5%', width: '30%' }}>
                 {
-                    <Button style={styles.nextButton} onClick={finalizeRegistration} variant="danger">Login</Button>
+                    <Button style={styles.nextButton} disabled={!(username&&password)} onClick={finalizeRegistration} variant="danger">Login</Button>
                 }
             </div>
         )
