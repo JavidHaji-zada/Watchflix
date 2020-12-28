@@ -3,6 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 
 import { APP_COLORS } from "../../../shared/colors";
+import { Cache } from "../../../shared/libs/cache";
 import { MediaService } from "../../../shared/libs/media-service";
 import { Genre } from "../../../shared/models/genre";
 import { CompanyUser, User, UserType } from "../../../shared/models/user";
@@ -293,8 +294,8 @@ function Register(): JSX.Element {
       }
       fetch('http://localhost:5000/register', options)
         .then(res => {
-          console.log('res ', res)
-          localStorage.setItem('currentUser', username)
+          console.log('res ', res.body)
+          Cache.setCurrenUser(user)
           history.replace('/app')
         })
         .then(contents => {
@@ -305,7 +306,7 @@ function Register(): JSX.Element {
         })
     } else if (userType == "company") {
       // complete registration for company
-      let companyUser = new User({ type: userType, username, email, birthday, fullname:name });
+      let companyUser = new User({ type: userType, username, email, birthday, fullname: name });
       const options: RequestInit = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -321,7 +322,7 @@ function Register(): JSX.Element {
       fetch('http://localhost:5000/register', options)
         .then(res => {
           console.log('res ', res)
-          localStorage.setItem('currentUser', username)
+          Cache.setCurrenUser(companyUser)
           history.replace('/app')
         })
         .then(contents => {

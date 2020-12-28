@@ -50,7 +50,7 @@ con.connect((err) => {
 // );
 
 app.get("/get", function (req, res) {
-	res.send("Hello World!");
+	res.send({ a: "Hello World!" });
 });
 
 app.post("/register", (req, res) => {
@@ -179,79 +179,81 @@ app.get("/profile", function (req, res) {
  
 app.post("/login", (req, res) => {
 	const { type, username, password } = req.body;
+	res.set("Content-Type", "application/json");
 	console.log("inside login");
- 	if (type == "company") {
-		let values = [[username, password]]		 
- 		con.query("SELECT * FROM CompanyUser where username = ?", [username], (error, result) => {
- 			if (error) {
-				console.log("error");
- 				res.send({
- 					code: 400,
- 					failed: "error occured",
- 				});
- 			} else {
-				console.log("no error");
- 				if(result.length > 0){
-					 if(password == result[0].password)
-					 {
-						 res.json({
-							 status:true,
-							 message:'succesfully found'
-						 })
-					 }
-					 else{
-						 res.json({
-							 status:false,
-							 message:'password does not match'
-						 })
-					 }
-				 }
-				 else{
-					 res.json({
-						 status:false,
-						 message:'email does not exist'
-					 })
-				 }
- 			}
-		 });
-	 }
-	 else {
-		let values = [[username, password]]		 
- 		con.query("SELECT * FROM User where username = ?", [username], (error, result) => {
- 			if (error) {
-				console.log("error");
- 				res.send({
- 					code: 400,
- 					failed: "error occured",
- 				});
- 			} else {
-				console.log("no error");
- 				if(result.length > 0){
-					console.log("email correct");
-					 if(password == result[0].password)
-					 {
-						console.log("info correct");
-						 res.json({
-							 status:true,
-							 message:'succesfully found'
-						 })
-					 }
-					 else{
-						 res.json({
-							 status:false,
-							 message:'password does not match'
-						 })
-					 }
-				 }
-				 else{
-					 res.json({
-						 status:false,
-						 message:'email does not exist'
-					 })
-				 }
- 			}
-		 });
-	 }
+	if (type == "company") {
+		con.query(
+			"SELECT * FROM CompanyUser where username = ?",
+			[username],
+			(error, result) => {
+				if (error) {
+					console.log("error");
+					res.send({
+						code: 400,
+						failed: "error occured",
+					});
+				} else {
+					console.log("no error");
+					if (result.length > 0) {
+						if (password == result[0].password) {
+							return res.json({
+								code: 200,
+								success: "success",
+								data: result[0],
+							});
+						} else {
+							return res.json({
+								code: 403,
+								failed: "Invalid password",
+							});
+						}
+					} else {
+						return res.json({
+							code: 401,
+							failed: "Username does not exist",
+						});
+					}
+				}
+			}
+		);
+	} else {
+		con.query(
+			"SELECT * FROM User where username = ?",
+			[username],
+			(error, result) => {
+				if (error) {
+					console.log("error");
+					res.send({
+						code: 400,
+						failed: "error occured",
+					});
+				} else {
+					console.log("no error");
+					if (result.length > 0) {
+						console.log("email correct");
+						if (password == result[0].password) {
+							console.log("info correct");
+							return res.json({
+								code: 200,
+								success: "succesfully found",
+								data: result[0],
+							});
+						} else {
+							return res.json({
+								code: 403,
+								failed: "Password does not match",
+							});
+						}
+					} else {
+						return res.json({
+							code: 401,
+							failed: "Username does not exist",
+						});
+					}
+				}
+			}
+		);
+	}
 });
 
 let server = app.listen(5000, function () {

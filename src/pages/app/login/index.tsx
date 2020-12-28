@@ -2,26 +2,28 @@ import React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Form } from 'react-bootstrap';
 import { APP_COLORS } from '../../../shared/colors'
-import { UserType } from '../../../shared/models/user';
+import { CompanyUser, User, UserType } from '../../../shared/models/user';
 import { useHistory } from "react-router-dom";
+import { Cache } from '../../../shared/libs/cache';
 
 
 function Login(): JSX.Element {
     const [userType, setUserType] = useState<UserType>('individual');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const history = useHistory();
 
     const companyInputRef = useRef<HTMLInputElement>(null)
     const individualInputRef = useRef<HTMLInputElement>(null)
-    
+
     function setChecked(option: UserType) {
         setUserType(option)
     }
 
-    function renderInner(): JSX.Element{
+    function renderInner(): JSX.Element {
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <h3 style={{ textAlign: 'center', color: APP_COLORS.darkGray }}>
                     Login to your account. Please specify account type.
                 </h3>
@@ -42,17 +44,23 @@ function Login(): JSX.Element {
                         <Form.Group controlId="formBasicText">
                             <Form.Label>Enter your username</Form.Label>
                             <Form.Control
-                                onChange={(event) => setUsername(event.target.value)}
+                                onChange={(event) => {
+                                    setError('')
+                                    setUsername(event.target.value)
+                                }}
                                 type="text" placeholder="Username" />
                         </Form.Group>
                         <Form.Group controlId="formBasicPassword">
                             <Form.Label>Enter your password</Form.Label>
-                            <Form.Control 
-                                onChange={(event) => setPassword(event.target.value)}
-                                type="text" placeholder="Username" />
+                            <Form.Control
+                                onChange={(event) => {
+                                    setError('')
+                                    setPassword(event.target.value)
+                                }}
+                                type="text" placeholder="Password" />
                         </Form.Group>
                     </div>
-                </div>   
+                </div>
             </div>
         )
     }
@@ -60,59 +68,58 @@ function Login(): JSX.Element {
         return (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '5%', width: '30%' }}>
                 {
-                    <Button style={styles.nextButton} disabled={!(username&&password)} onClick={finalizeRegistration} variant="danger">Login</Button>
+                    <Button style={styles.nextButton} disabled={!(username && password)} onClick={login} variant="danger">Login</Button>
                 }
             </div>
         )
     }
 
-    function finalizeRegistration(): void {
+    function login(): void {
 
         if (userType == "individual") {
             // complete registration for individual
             const options: RequestInit = {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({userType, username, password})
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userType, username, password })
             }
             fetch('http://localhost:5000/login', options)
-              .then(res => {
-                  if(res.status){
-                    console.log(res)
-                    localStorage.setItem('currentUser', username)
-                    history.replace('/app')
-                  }
-              })
-              .then(contents => {
-                console.log(2)
-              })
-              .catch(err => {
-                console.log(3)
-              })
-          } else if (userType == "company") {
+                .then(res => {
+                    console.log("res ", res)
+                    res.json().then(result => {
+                        console.log('result ', result)
+                        if (result.failed) {
+                            setError(result.failed)
+                        } else if (result.success) {
+                            let user = new User(result.data)
+                            Cache.setCurrenUser(user)
+                            history.replace('/app')
+                        }
+                    })
+                })
+        } else if (userType == "company") {
             // complete registration for company
             const options: RequestInit = {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                userType, username, password
-              })
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userType, username, password
+                })
             }
             fetch('http://localhost:5000/login', options)
-              .then(res => {
-                if(res.status){
-                    console.log('1')
-                    localStorage.setItem('currentUser', username)
-                    history.replace('/app')
-                  }
-              })
-              .then(contents => {
-                console.log('2')
-              })
-              .catch(err => {
-                console.log('3')
-              })
-          }
+                .then(res => {
+                    res.json().then(result => {
+                        console.log('result ', result)
+                        if (result.failed) {
+                            setError(result.failed)
+                        } else if (result.success) {
+                            let user = new CompanyUser(result.data)
+                            Cache.setCurrenUser(user)
+                            history.replace('/app')
+                        }
+                    })
+                })
+        }
     }
 
     return (
@@ -120,8 +127,13 @@ function Login(): JSX.Element {
             <h1 style={styles.header}>Watchflix</h1>
             <h3 style={{ textAlign: 'center' }}>Just a few steps to enjoy movie night</h3>
             <div style={{ ...styles.innerContainer, ...{ flexDirection: 'column' } }} >
-            {renderInner()}
-            {renderButton()}
+                {renderInner()}
+                {renderButton()}
+                <p style={{
+                    color: 'red'
+                }}>
+                    {error}
+                </p>
             </div>
         </div>
     )
