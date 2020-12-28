@@ -305,8 +305,31 @@ function Register(): JSX.Element {
         })
     } else if (userType == "company") {
       // complete registration for company
-      let companyUser = new User({ type: userType, username, email });
-
+      let companyUser = new User({ type: userType, username, email, birthday, fullname:name });
+      const options: RequestInit = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...companyUser, preffered_genres: genreStates.map(genreState => {
+            if (genreState.checked)
+              return genreState.genre
+          }).filter(genre => genre),
+          password,
+          birthday: User.formatDate(birthday)
+        })
+      }
+      fetch('http://localhost:5000/register', options)
+        .then(res => {
+          console.log('res ', res)
+          localStorage.setItem('currentUser', username)
+          history.replace('/app')
+        })
+        .then(contents => {
+          console.log('contents ', contents)
+        })
+        .catch(err => {
+          console.log('err ', err)
+        })
     }
   }
 

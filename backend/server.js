@@ -64,12 +64,10 @@ app.post("/register", (req, res) => {
 		preffered_genres,
 	} = req.body;
 	if (type == "company") {
-		let company_user = {
-			c_username: username,
-			email,
-			password,
-		};
-		con.query("INSERT INTO CompanyUser", company_user, (error) => {
+		let values = [[fullname, username, email, password]];
+		let sql =
+			"INSERT INTO CompanyUser (name, c_username, email, password) VALUES?";
+		con.query(sql, [values], (error) => {
 			if (error) {
 				console.log("err ", error);
 				res.send({
@@ -79,7 +77,7 @@ app.post("/register", (req, res) => {
 			} else {
 				res.send({
 					code: 200,
-					success: "User Registered Successfully",
+					success: "Company User Registered Successfully",
 				});
 			}
 		});
@@ -131,49 +129,82 @@ app.post("/register", (req, res) => {
 	}
 });
 
-// app.post("/login", (req, res) => {
-// 	const { type, username, password } = req.body;
-// 	if (type == "company") {
-// 		let company_user = {
-// 			c_username: username,
-// 			password,
-// 		};
-// 		con.query("INSERT INTO CompanyUser", company_user, (error) => {
-// 			if (error) {
-// 				res.send({
-// 					code: 400,
-// 					failed: "error occured",
-// 				});
-// 			} else {
-// 				res.send({
-// 					code: 200,
-// 					success: "User Registered Successfully",
-// 				});
-// 			}
-// 		});
-// 	} else if (type == "individual") {
-// 		let user = {
-// 			username,
-// 			email,
-// 			password,
-// 			fullname,
-// 			b_date: birthday,
-// 		};
-// 		con.query("INSERT INTO User", user, (error) => {
-// 			if (error) {
-// 				res.send({
-// 					code: 400,
-// 					failed: "error occured",
-// 				});
-// 			} else {
-// 				res.send({
-// 					code: 200,
-// 					success: "User Registered Successfully",
-// 				});
-// 			}
-// 		});
-// 	}
-// });
+ app.post("/login", (req, res) => {
+	const { type, username, password } = req.body;
+	console.log("inside login");
+ 	if (type == "company") {
+		let values = [[username, password]]		 
+ 		con.query("SELECT * FROM CompanyUser where username = ?", [username], (error, result) => {
+ 			if (error) {
+				console.log("error");
+ 				res.send({
+ 					code: 400,
+ 					failed: "error occured",
+ 				});
+ 			} else {
+				console.log("no error");
+ 				if(result.length > 0){
+					 if(password == result[0].password)
+					 {
+						 res.json({
+							 status:true,
+							 message:'succesfully found'
+						 })
+					 }
+					 else{
+						 res.json({
+							 status:false,
+							 message:'password does not match'
+						 })
+					 }
+				 }
+				 else{
+					 res.json({
+						 status:false,
+						 message:'email does not exist'
+					 })
+				 }
+ 			}
+		 });
+	 }
+	 else {
+		let values = [[username, password]]		 
+ 		con.query("SELECT * FROM User where username = ?", [username], (error, result) => {
+ 			if (error) {
+				console.log("error");
+ 				res.send({
+ 					code: 400,
+ 					failed: "error occured",
+ 				});
+ 			} else {
+				console.log("no error");
+ 				if(result.length > 0){
+					console.log("email correct");
+					 if(password == result[0].password)
+					 {
+						console.log("info correct");
+						 res.json({
+							 status:true,
+							 message:'succesfully found'
+						 })
+					 }
+					 else{
+						 res.json({
+							 status:false,
+							 message:'password does not match'
+						 })
+					 }
+				 }
+				 else{
+					 res.json({
+						 status:false,
+						 message:'email does not exist'
+					 })
+				 }
+ 			}
+		 });
+	 }
+});
 
 let server = app.listen(5000, function () {
 	console.log("Server is running..");

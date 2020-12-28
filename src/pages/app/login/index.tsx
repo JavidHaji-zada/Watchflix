@@ -3,12 +3,14 @@ import { useEffect, useRef, useState } from 'react'
 import { Button, Form } from 'react-bootstrap';
 import { APP_COLORS } from '../../../shared/colors'
 import { UserType } from '../../../shared/models/user';
+import { useHistory } from "react-router-dom";
 
 
 function Login(): JSX.Element {
     const [userType, setUserType] = useState<UserType>('individual');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const history = useHistory();
 
     const companyInputRef = useRef<HTMLInputElement>(null)
     const individualInputRef = useRef<HTMLInputElement>(null)
@@ -65,7 +67,52 @@ function Login(): JSX.Element {
     }
 
     function finalizeRegistration(): void {
-        //Login to the account
+
+        if (userType == "individual") {
+            // complete registration for individual
+            const options: RequestInit = {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({userType, username, password})
+            }
+            fetch('http://localhost:5000/login', options)
+              .then(res => {
+                  if(res.status){
+                    console.log(res)
+                    localStorage.setItem('currentUser', username)
+                    history.replace('/app')
+                  }
+              })
+              .then(contents => {
+                console.log(2)
+              })
+              .catch(err => {
+                console.log(3)
+              })
+          } else if (userType == "company") {
+            // complete registration for company
+            const options: RequestInit = {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                userType, username, password
+              })
+            }
+            fetch('http://localhost:5000/login', options)
+              .then(res => {
+                if(res.status){
+                    console.log('1')
+                    localStorage.setItem('currentUser', username)
+                    history.replace('/app')
+                  }
+              })
+              .then(contents => {
+                console.log('2')
+              })
+              .catch(err => {
+                console.log('3')
+              })
+          }
     }
 
     return (
