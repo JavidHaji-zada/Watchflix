@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 import { APP_COLORS } from "../../../shared/colors";
 import { MediaService } from "../../../shared/libs/media-service";
@@ -14,6 +15,8 @@ type GenreState = {
 };
 
 function Register(): JSX.Element {
+  const history = useHistory()
+
   const genres = MediaService.getGenres();
 
   const [currentStage, setCurrentStage] = useState(1);
@@ -22,12 +25,12 @@ function Register(): JSX.Element {
 
   const [userType, setUserType] = useState<UserType>("individual");
 
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [birthday, setBirthday] = useState<Date>();
-  const [email, setEmail] = useState("");
+  const [name, setName] = useState("Javid");
+  const [surname, setSurname] = useState("Haji-zada");
+  const [username, setUsername] = useState("jahazious");
+  const [password, setPassword] = useState("mypass");
+  const [birthday, setBirthday] = useState<Date>(new Date());
+  const [email, setEmail] = useState("cavid.hacizadee.99@gmail.com");
 
   const companyInputRef = useRef<HTMLInputElement>(null);
   const individualInputRef = useRef<HTMLInputElement>(null);
@@ -187,48 +190,48 @@ function Register(): JSX.Element {
                 </div>
               </div>
             ) : (
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <div style={{ marginRight: 20 }}>
-                  <Form.Group controlId="formBasicText">
-                    <Form.Label>Company Name:</Form.Label>
-                    <Form.Control
-                      onChange={(event) => setName(event.target.value)}
-                      type="text"
-                      placeholder="Company Name"
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="formBasicEmail">
-                    <Form.Label>E-mail Address</Form.Label>
-                    <Form.Control
-                      onChange={(event) => setEmail(event.target.value)}
-                      type="email"
-                      placeholder="E-mail"
-                    />
-                  </Form.Group>
-                </div>
-                <div style={{ marginLeft: 20 }}>
-                  <Form.Group controlId="formBasicText">
-                    <Form.Label>Create Company Username</Form.Label>
-                    <Form.Control
-                      onChange={(event) => setUsername(event.target.value)}
-                      type="text"
-                      placeholder="Username"
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Choose password</Form.Label>
-                    <Form.Control
-                      onChange={(event) => setPassword(event.target.value)}
-                      type="password"
-                      placeholder="Password"
-                    />
-                    {/* <Form.Text className="text-danger">
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                  <div style={{ marginRight: 20 }}>
+                    <Form.Group controlId="formBasicText">
+                      <Form.Label>Company Name:</Form.Label>
+                      <Form.Control
+                        onChange={(event) => setName(event.target.value)}
+                        type="text"
+                        placeholder="Company Name"
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formBasicEmail">
+                      <Form.Label>E-mail Address</Form.Label>
+                      <Form.Control
+                        onChange={(event) => setEmail(event.target.value)}
+                        type="email"
+                        placeholder="E-mail"
+                      />
+                    </Form.Group>
+                  </div>
+                  <div style={{ marginLeft: 20 }}>
+                    <Form.Group controlId="formBasicText">
+                      <Form.Label>Create Company Username</Form.Label>
+                      <Form.Control
+                        onChange={(event) => setUsername(event.target.value)}
+                        type="text"
+                        placeholder="Username"
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                      <Form.Label>Choose password</Form.Label>
+                      <Form.Control
+                        onChange={(event) => setPassword(event.target.value)}
+                        type="password"
+                        placeholder="Password"
+                      />
+                      {/* <Form.Text className="text-danger">
                                                     We'll never share your email with anyone else.
                                                 </Form.Text> */}
-                  </Form.Group>
+                    </Form.Group>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
           </div>
         );
       }
@@ -273,8 +276,37 @@ function Register(): JSX.Element {
   function finalizeRegistration(): void {
     if (userType == "individual") {
       // complete registration for individual
+      let user = new User({ type: userType, username, email, birthday, fullname: name + " " + surname });
+      console.log('creating individual user ', user)
+      console.log('creating individual user ', JSON.stringify(user))
+      const options: RequestInit = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...user, preffered_genres: genreStates.map(genreState => {
+            if (genreState.checked)
+              return genreState.genre
+          }).filter(genre => genre),
+          password,
+          birthday: User.formatDate(birthday)
+        })
+      }
+      fetch('http://localhost:5000/register', options)
+        .then(res => {
+          console.log('res ', res)
+          localStorage.setItem('currentUser', username)
+          history.replace('/app')
+        })
+        .then(contents => {
+          console.log('contents ', contents)
+        })
+        .catch(err => {
+          console.log('err ', err)
+        })
     } else if (userType == "company") {
       // complete registration for company
+      let companyUser = new User({ type: userType, username, email });
+
     }
   }
 
@@ -299,15 +331,15 @@ function Register(): JSX.Element {
               Register Me!
             </Button>
           ) : (
-            <Button
-              style={styles.nextButton}
-              disabled = {!(name && username && password && email && birthday && surname) && (currentStage == 2)}
-              onClick={() => setCurrentStage(currentStage + 1)}
-              variant="danger"
-            >
-              Next
-            </Button>
-          )
+              <Button
+                style={styles.nextButton}
+                disabled={!(name && username && password && email && birthday && surname) && (currentStage == 2)}
+                onClick={() => setCurrentStage(currentStage + 1)}
+                variant="danger"
+              >
+                Next
+              </Button>
+            )
         ) : currentStage == 2 ? (
           <Button
             disabled={!(name && username && password && email) && (currentStage == 2)}
@@ -318,14 +350,14 @@ function Register(): JSX.Element {
             Register Me!
           </Button>
         ) : (
-          <Button
-            style={styles.nextButton}
-            onClick={() => setCurrentStage(currentStage + 1)}
-            variant="danger"
-          >
-            Next
-          </Button>
-        )}
+              <Button
+                style={styles.nextButton}
+                onClick={() => setCurrentStage(currentStage + 1)}
+                variant="danger"
+              >
+                Next
+              </Button>
+            )}
       </div>
     );
   }

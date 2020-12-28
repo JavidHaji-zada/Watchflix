@@ -2,6 +2,7 @@ import React from "react";
 import { Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
 import { MainState } from "../index";
 import { APP_STYLES } from "../../../../../shared/styles";
+import { useHistory } from "react-router-dom";
 
 interface MainHeaderProps {
   changeState: (state: MainState) => void;
@@ -9,6 +10,7 @@ interface MainHeaderProps {
 
 function MainHeader(props: MainHeaderProps): JSX.Element {
   const { changeState } = props;
+  const history = useHistory()
   return (
     <div
       style={{
@@ -88,7 +90,10 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
           >
             Profile
           </Dropdown.Item>
-          <Dropdown.Item>Log out</Dropdown.Item>
+          <Dropdown.Item onClick={() => {
+            localStorage.removeItem('currentUser')
+            history.replace('/app')
+          }}>Log out</Dropdown.Item>
         </DropdownButton>
         <Button style={styles.nameButton}>Icon</Button>
       </div>

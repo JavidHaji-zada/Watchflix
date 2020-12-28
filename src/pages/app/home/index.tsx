@@ -17,7 +17,8 @@ function Home(): JSX.Element {
   }
 
   function isUserLoggedIn(): boolean {
-    return false;
+    let currentUser = localStorage.getItem('currentUser')
+    return (!!currentUser && currentUser != null);
   }
 
   return (
@@ -25,35 +26,35 @@ function Home(): JSX.Element {
       {isUserLoggedIn() ? (
         <Main />
       ) : (
-        <div>
-          <Button
-            onClick={onLoginClicked}
-            style={{ position: "absolute", top: 10, right: 10 }}
-            variant="danger"
-          >
-            Login
+          <div>
+            <Button
+              onClick={onLoginClicked}
+              style={{ position: "absolute", top: 10, right: 10 }}
+              variant="danger"
+            >
+              Login
           </Button>
-          <div style={styles.headerContainer}>
-            <h1 style={styles.header}>Watchflix</h1>
-          </div>
-          <div style={styles.sloganContainer}>
-            <h2 style={styles.slogan}>Watchflix and Chill</h2>
-          </div>
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              height: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Button onClick={onRegisterClicked} variant="danger">
-              Register Now!
+            <div style={styles.headerContainer}>
+              <h1 style={styles.header}>Watchflix</h1>
+            </div>
+            <div style={styles.sloganContainer}>
+              <h2 style={styles.slogan}>Watchflix and Chill</h2>
+            </div>
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                height: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Button onClick={onRegisterClicked} variant="danger">
+                Register Now!
             </Button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }
