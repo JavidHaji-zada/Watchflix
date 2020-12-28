@@ -2,6 +2,7 @@ import React from "react";
 import { Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
 import { CompanyMainState } from "../index";
 import { APP_STYLES } from "../../../../../shared/styles";
+import { Cache } from "../../../../../shared/libs/cache";
 
 interface CompanyHeaderProps {
   changeState: (state: CompanyMainState) => void;
@@ -45,10 +46,9 @@ function CompanyHeader(props: CompanyHeaderProps): JSX.Element {
           className=".transparent-button"
           style={styles.nameButton}
           id="dropdown-basic-button"
-          title="Example Examplino" /** TODO: change into user.fullname */
+          title={Cache.getCurrentUser().username} /** TODO: change into user.fullname */
         >
           <Dropdown.Item
-            href="#/action-1"
             onClick={() => {
               changeState("profile");
             }}
@@ -56,7 +56,6 @@ function CompanyHeader(props: CompanyHeaderProps): JSX.Element {
             Profile
           </Dropdown.Item>
           <Dropdown.Item
-            href="#/action-2"
             onClick={() => {
               changeState("log_out");
             }}

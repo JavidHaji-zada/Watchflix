@@ -3,6 +3,7 @@ import { Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
 import { MainState } from "../index";
 import { APP_STYLES } from "../../../../../shared/styles";
 import { useHistory } from "react-router-dom";
+import { Cache } from "../../../../../shared/libs/cache";
 
 interface MainHeaderProps {
   changeState: (state: MainState) => void;
@@ -64,10 +65,9 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
           className=".transparent-button"
           style={styles.nameButton}
           id="dropdown-basic-button"
-          title="Example Examplino" /** TODO: change into user.fullname */
+          title={Cache.getCurrentUser().username} /** TODO: change into user.fullname */
         >
           <Dropdown.Item
-            href="#/friends"
             onClick={() => {
               changeState("friends");
             }}
@@ -75,7 +75,6 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
             My friends
           </Dropdown.Item>
           <Dropdown.Item
-            href="#/groups"
             onClick={() => {
               changeState("groups");
             }}
@@ -83,7 +82,6 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
             Join Group
           </Dropdown.Item>
           <Dropdown.Item
-            href="#/profile"
             onClick={() => {
               changeState("profile");
             }}

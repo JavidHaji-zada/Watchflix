@@ -134,7 +134,6 @@ app.post("/new_channel", (req, res) => {
 	const { name, username } = req.body;
 	let channel_id = generateRandomID(12);
 	let c_name = name;
-	// res.set("Content-Type", "application/json");
 	let values = [[username, channel_id, c_name]];
 	con.query(
 		"INSERT INTO Channel (username, channel_id, c_name) VALUES ?",
@@ -156,39 +155,77 @@ app.post("/new_channel", (req, res) => {
 	);
 });
 
-app.get(`/channel/:_id`, (req, res) => {
-	console.log("req.body ", req.body);
-	const { _id } = req.params;
+app.get(`/medias/:channel_id`, (req, res) => {
+	const { channel_id } = req.params;
 	con.query(
-		"SELECT * FROM Channel JOIN contain JOIN MediaProduct ON Channel.channel_id = ? AND contain.channel_id = ? AND contain.m_id = MediaProduct.m_id",
-		[_id, _id],
+		"SELECT * FROM contain JOIN MediaProduct ON contain.channel_id = ? AND contain.m_id = MediaProduct.m_id",
+		[channel_id],
 		(error, result) => {
-			console.log("error ", error);
 			if (error) {
+				console.log("error ", error);
 				res.send({
 					code: 400,
 					failed: "Could not get channel",
 				});
 			} else {
-				console.log("result ", result);
+				console.log("medias for channel ", result);
+				res.send({
+					code: 200,
+					success: "fetched channel",
+					data: result,
+				});
+			}
+		}
+	);
+});
+
+app.get(`/channel/:channel_id`, (req, res) => {
+	const { channel_id } = req.params;
+	con.query(
+		"SELECT * FROM Channel WHERE channel_id = ?",
+		[channel_id],
+		(error, result) => {
+			if (error) {
+				console.log("error ", error);
+				res.send({
+					code: 400,
+					failed: "Could not get channel",
+				});
+			} else {
+				console.log("fetched channel ", result);
 				if (result.length > 0) {
 					let { c_name, channel_id, username } = result[0];
 					res.send({
 						code: 200,
 						success: "fetched channel",
-						data: {
-							name: c_name,
-							_id: channel_id,
-							medias: result.map((channel) => {
-								return {
-									_id: channel.m_id,
-									release_date: channel.release_date,
-									publisher: channel.publisher,
-									name: channel.mp_name,
-									description: channel.description || "",
-								};
-							}),
-						},
+						data: result[0],
+					});
+				}
+			}
+		}
+	);
+});
+
+app.get("/channels/:username", (req, res) => {
+	const { username } = req.params;
+	console.log("get channels for ", username);
+	con.query(
+		"SELECT * FROM Channel WHERE username = ?",
+		[username],
+		(error, channels) => {
+			if (error) {
+				console.log("error ", error);
+				res.send({
+					code: 400,
+					failed: "Cannot get channels",
+				});
+			} else {
+				console.log("channels ", channels);
+				if (channels.length > 0) {
+					res.send({
+						code: 200,
+						success: "Fetched all channels for user",
+						data: channels,
 					});
 				}
 			}

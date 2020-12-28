@@ -8,11 +8,10 @@ export class MediaProduct {
     publisher: string
 
     constructor(details?: any) {
-        console.log('create mp ', details)
-        this._id = details._id
+        this._id = details.m_id
         this.score = details.score
         this.release_date = new Date(details.release_date)
-        this.name = details.name
+        this.name = details.mp_name
         this.thumbnail_url = details.thumbnail_url || "https://img1.evosis.org/movie/629/icon/icon0.png"
         this.description = details.description
         this.publisher = details.publisher

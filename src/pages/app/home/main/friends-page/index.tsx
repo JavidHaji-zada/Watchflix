@@ -41,7 +41,7 @@ function Friends(): JSX.Element {
     });
     userList.push(newUser);
     setFriends(userList);
-  });
+  }, []);
 
   return (
     <div style={{ flex: 1, fontSize: 24, color: "white" }}>
@@ -55,10 +55,10 @@ function Friends(): JSX.Element {
       >
         {friends.map((user) => (
           <div
-            style={{...styles.friends }}
+            style={{ ...styles.friends }}
           >
-            <FaUserAlt  />
-            <p style={{ fontSize: "24px", color: "white", marginLeft: 8 }}>   {user.fullname}</p> 
+            <FaUserAlt />
+            <p style={{ fontSize: "24px", color: "white", marginLeft: 8 }}>   {user.fullname}</p>
           </div>
         ))}
       </div>
@@ -72,7 +72,7 @@ const styles = {
   },
   friends: {
     alignSelf: "baseline",
-    backgroundColor:'#333333',
+    backgroundColor: '#333333',
     color: "red",
     width: "33%",
     margin: "2.5%",

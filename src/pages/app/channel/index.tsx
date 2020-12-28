@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Col, Form, InputGroup, Button } from "react-bootstrap";
-import { FaHandMiddleFinger } from "react-icons/fa";
+import { Spinner } from "react-bootstrap";
 import "./channel.css";
-import { FaSearch } from "react-icons/fa";
 import { Channel } from "../../../shared/models/channel";
 import { MediaProduct } from "../../../shared/models/media-product";
 
-import { APP_COLORS } from "../../../shared/colors";
 import { useHistory } from "react-router-dom";
 
 function ChannelPage(props: any): JSX.Element {
@@ -14,9 +11,12 @@ function ChannelPage(props: any): JSX.Element {
   const [channelID, setChannelID] = useState("");
   const [lastMovie, setLastMovie] = useState<MediaProduct>();
   const [currentChannel, setChannel] = useState<Channel>();
+  const [channelLoading, setChannelLoading] = useState(true)
+  const [mediasLoading, setMediasLoading] = useState(true)
 
   useEffect(() => {
     let _id = props.match.params.id
+    console.log("id ", _id)
     const options: RequestInit = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -28,44 +28,30 @@ function ChannelPage(props: any): JSX.Element {
           if (result.failed) {
           } else if (result.success) {
             let channel = new Channel(result.data)
-            console.log('channel ', channel)
-            setChannel(channel)
+            setChannelLoading(false)
+            fetch(`http://localhost:5000/medias/${_id}`, options)
+              .then(res => {
+                res.json().then(result => {
+                  if (result.failed) {
+                  } else if (result.success) {
+                    let medias = result.data.map((media: any) => new MediaProduct(media))
+                    channel.medias = medias
+                    console.log('channel is ', channel)
+                    setChannel(channel)
+                    setMediasLoading(false)
+                  }
+                })
+                  .catch(err => {
+                    console.log('err ', err)
+                  })
+              })
+              .catch(err => {
+                console.log('err ', err)
+              })
           }
         })
       })
-    // let mediaProduct1 = new MediaProduct({
-    //   _id: "id1",
-    //   score: 5,
-    //   release_date: new Date(),
-    //   name: "Kung Fu Panda",
-    //   thumbnail_url: "https://img1.evosis.org/movie/629/icon/icon0.png",
-    // });
-    // let mediaProduct2 = new MediaProduct({
-    //   _id: "id2",
-    //   score: 5,
-    //   release_date: new Date(),
-    //   name: "Inception",
-    //   thumbnail_url:
-    //     "https://bsaber.com/wp-content/uploads/2019/05/18598-20226.jpg",
-    // });
-    // let mediaProduct3 = new MediaProduct({
-    //   _id: "id3",
-    //   score: 4.7,
-    //   release_date: new Date(),
-    //   name: "Tenet",
-    //   thumbnail_url:
-    //     "https://images.pexels.com/users/avatars/3485071/watch-online-tenet-2020-free-hd-full-movie-969.jpeg?w=256&h=256&fit=crop&auto=compress",
-    // });
-    // let channel2 = new Channel({
-    //   _id: "id2",
-    //   name: "Beyin Yakanlar",
-    //   medias: [mediaProduct1, mediaProduct2, mediaProduct3, mediaProduct3],
-    // });
 
-    // let channelID = props.match.params.id;
-    // setChannelID(channelID);
-    // setChannel(channel2);
-    // setLastMovie(mediaProduct3);
   }, []);
 
   function onMoviePressed(media: MediaProduct): void { }
@@ -77,7 +63,6 @@ function ChannelPage(props: any): JSX.Element {
       >
         <button
           style={{
-            marginLeft: 12,
             border: 0,
             backgroundColor: "transparent",
             display: "flex",
@@ -95,22 +80,36 @@ function ChannelPage(props: any): JSX.Element {
               alignSelf: "left,",
             }}
           >
-            {" "}
-            {"<<" + currentChannel?.name}
+            {
+              channelLoading ? (
+                <Spinner animation="border" variant="danger" />
+              ) : (
+                  "<<" + currentChannel?.name
+                )
+            }
           </p>
         </button>
         <div
-          style={{ display: "flex", flexDirection: "row", alignItems: "left" }}
+          style={{ display: "flex", flexDirection: "row", alignItems: "left", marginBottom: 12 }}
         >
-          {currentChannel?.medias.map((media) => (
-            <button style={styles.button} onClick={() => onMoviePressed(media)}>
-              <img style={{ width: 128, height: 128 }} src={media.thumbnail_url} />
-            </button>
-          ))}
+          {
+            mediasLoading ? (
+              <Spinner animation="border" variant="danger" />
+            ) : (
+                currentChannel?.medias.length == 0 ? (
+                  <div style={{ color: 'red', fontSize: 24 }}>No media found!</div>
+                ) : (
+                    currentChannel?.medias.map((media) => (
+                      <button style={styles.button} onClick={() => onMoviePressed(media)}>
+                        <img style={{ width: 128, height: 128 }} src={media.thumbnail_url} />
+                      </button>
+                    ))
+                  )
+              )
+          }
         </div>
         <button
           style={{
-            marginLeft: 12,
             border: 0,
             backgroundColor: "transparent",
             display: "flex",
