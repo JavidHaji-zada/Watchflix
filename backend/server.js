@@ -3,6 +3,7 @@ let cors = require("cors");
 let bodyParser = require("body-parser");
 let app = express();
 let mysql = require("mysql");
+let { generateRandomID } = require("./utils");
 let { SQL_STATEMENTS } = require("./sql");
 app.use(cors());
 app.use(bodyParser.json());
@@ -129,13 +130,79 @@ app.post("/register", (req, res) => {
 	}
 });
 
+app.post("/new_channel", (req, res) => {
+	const { name, username } = req.body;
+	let channel_id = generateRandomID(12);
+	let c_name = name;
+	// res.set("Content-Type", "application/json");
+	let values = [[username, channel_id, c_name]];
+	con.query(
+		"INSERT INTO Channel (username, channel_id, c_name) VALUES ?",
+		[values],
+		(error) => {
+			if (error) {
+				res.send({
+					code: 400,
+					failed: "Error occured while channel creation",
+				});
+			} else {
+				res.send({
+					code: 200,
+					success: "Channel creation successfull",
+					data: { _id: channel_id, name, medias: [] },
+				});
+			}
+		}
+	);
+});
+
+app.get(`/channel/:_id`, (req, res) => {
+	console.log("req.body ", req.body);
+	const { _id } = req.params;
+	con.query(
+		"SELECT * FROM Channel JOIN contain JOIN MediaProduct ON Channel.channel_id = ? AND contain.channel_id = ? AND contain.m_id = MediaProduct.m_id",
+		[_id, _id],
+		(error, result) => {
+			console.log("error ", error);
+			if (error) {
+				res.send({
+					code: 400,
+					failed: "Could not get channel",
+				});
+			} else {
+				console.log("result ", result);
+				if (result.length > 0) {
+					let { c_name, channel_id, username } = result[0];
+					res.send({
+						code: 200,
+						success: "fetched channel",
+						data: {
+							name: c_name,
+							_id: channel_id,
+							medias: result.map((channel) => {
+								return {
+									_id: channel.m_id,
+									release_date: channel.release_date,
+									publisher: channel.publisher,
+									name: channel.mp_name,
+									description: channel.description || "",
+								};
+							}),
+						},
+					});
+				}
+			}
+		}
+	);
+});
+
 app.post("/login", (req, res) => {
 	const { type, username, password } = req.body;
-	res.set("Content-Type", "application/json");
+	// res.set("Content-Type", "application/json");
 	console.log("inside login");
 	if (type == "company") {
 		con.query(
-			"SELECT * FROM CompanyUser where username = ?",
+			"SELECT * FROM CompanyUser WHERE username = ?",
 			[username],
 			(error, result) => {
 				if (error) {

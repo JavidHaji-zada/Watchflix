@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Col, Form, InputGroup, Button } from 'react-bootstrap';
 import { FaSearch } from "react-icons/fa";
 import { useHistory } from 'react-router-dom';
+import { Cache } from '../../../../../shared/libs/cache';
 
 import { Channel } from '../../../../../shared/models/channel'
 import { MediaProduct } from '../../../../../shared/models/media-product';
@@ -12,6 +13,8 @@ function Channels(): JSX.Element {
     const [channels, setChannels] = useState<Channel[]>([]);
     const [lastMovie, setLastMovie] = useState<MediaProduct>();
     const [search, setSearch] = useState('')
+    const [channelName, setChannelName] = useState('')
+    const [channelError, setChannelError] = useState('');
 
     useEffect(() => {
         // get channels
@@ -34,6 +37,28 @@ function Channels(): JSX.Element {
 
     function onMoviePressed(media: MediaProduct): void {
 
+    }
+
+    function createChannel(): void {
+        const options: RequestInit = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: channelName, username: Cache.getCurrentUser().username
+            })
+        }
+        fetch('http://localhost:5000/new_channel', options)
+            .then(res => {
+                res.json().then(result => {
+                    console.log('result ', result)
+                    if (result.failed) {
+                        setChannelError(result.failed)
+                    } else if (result.success) {
+                        let channel = new Channel(result.data)
+                        history.replace(`/channel/${channel._id}`)
+                    }
+                })
+            })
     }
 
     return (
@@ -68,7 +93,18 @@ function Channels(): JSX.Element {
                                     </InputGroup>
                                 </Form.Group>
                             </Form.Row>
-                            <Button variant='danger'>New Channel</Button>
+                            <div style={{ flexDirection: 'row', display: 'flex' }}>
+                                <input
+                                    type="text"
+                                    placeholder="Enter channel name"
+                                    onChange={(e) => setChannelName(e.target.value)}
+                                    value={channelName}
+                                    maxLength={24}
+                                    style={{ marginRight: 8, borderRadius: 6, paddingLeft: 6 }}
+                                />
+                                <Button onClick={createChannel} disabled={channelName == ''} variant='danger'>New Channel</Button>
+                            </div>
+
                         </div>
                     </div>
                 )

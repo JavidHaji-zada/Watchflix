@@ -1,7 +1,4 @@
 import React, { HTMLAttributes, useState } from "react";
-import { Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
-
-import { APP_STYLES } from "../../../../shared/styles";
 import MainHeader from "./main-header";
 import Friends from "./friends-page";
 import Channels from "./channels";
@@ -27,10 +24,10 @@ function Main(): JSX.Element {
           <Friends />
         </div>)}
       {state == "series" && (
-        <div style={{ color: "white" }}><Series/></div>
+        <div style={{ color: "white" }}><Series /></div>
       )}
       {state == "movies" && (
-        <div style={{ color: "white" }}><Movie/></div>
+        <div style={{ color: "white" }}><Movie /></div>
       )}
       {state == "groups" && (
         <div style={{ color: "white" }}>I am group case</div>

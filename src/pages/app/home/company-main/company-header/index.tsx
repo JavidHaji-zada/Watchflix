@@ -1,16 +1,14 @@
 import React from "react";
 import { Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
-import { MainState } from "../index";
+import { CompanyMainState } from "../index";
 import { APP_STYLES } from "../../../../../shared/styles";
-import { useHistory } from "react-router-dom";
 
-interface MainHeaderProps {
-  changeState: (state: MainState) => void;
+interface CompanyHeaderProps {
+  changeState: (state: CompanyMainState) => void;
 }
 
-function MainHeader(props: MainHeaderProps): JSX.Element {
+function CompanyHeader(props: CompanyHeaderProps): JSX.Element {
   const { changeState } = props;
-  const history = useHistory()
   return (
     <div
       style={{
@@ -21,36 +19,19 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
       }}
     >
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <button style={{ outline: 'none', backgroundColor: 'transparent', borderWidth: 0 }}>
-          <h1
-            style={{
-              ...APP_STYLES.headerStyle,
-              fontWeight: "bold",
-              height: 40,
-            }}
-            onClick={() => {
-              changeState("default");
-            }}
-          >
-            Watchflix
+        <h1
+          style={{
+            ...APP_STYLES.headerStyle,
+            fontWeight: "bold",
+            height: 40,
+          }}
+          onClick={() => {
+            changeState("default");
+          }}
+        >
+          Watchflix
         </h1>
-        </button>
-        <Button
-          style={styles.button}
-          onClick={() => {
-            changeState("series");
-          }}
-        >
-          <u>Series</u>
-        </Button>
-        <Button
-          style={styles.button}
-          onClick={() => {
-            changeState("movies");
-          }}
-        >
-          <u>Movies</u>
-        </Button>
+        
       </div>
       <div
         style={{
@@ -67,33 +48,21 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
           title="Example Examplino" /** TODO: change into user.fullname */
         >
           <Dropdown.Item
-            href="#/friends"
-            onClick={() => {
-              changeState("friends");
-            }}
-          >
-            My friends
-          </Dropdown.Item>
-          <Dropdown.Item
-            href="#/groups"
-            onClick={() => {
-              changeState("groups");
-            }}
-          >
-            Join Group
-          </Dropdown.Item>
-          <Dropdown.Item
-            href="#/profile"
+            href="#/action-1"
             onClick={() => {
               changeState("profile");
             }}
           >
             Profile
           </Dropdown.Item>
-          <Dropdown.Item onClick={() => {
-            localStorage.removeItem('currentUser')
-            history.replace('/app')
-          }}>Log out</Dropdown.Item>
+          <Dropdown.Item
+            href="#/action-2"
+            onClick={() => {
+              changeState("log_out");
+            }}
+          >
+            Log out
+          </Dropdown.Item>
         </DropdownButton>
       </div>
     </div>
@@ -126,4 +95,4 @@ const styles = {
   },
 };
 
-export default MainHeader;
+export default CompanyHeader;

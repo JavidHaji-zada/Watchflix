@@ -13,45 +13,62 @@ function ChannelPage(props: any): JSX.Element {
   const history = useHistory();
   const [channelID, setChannelID] = useState("");
   const [lastMovie, setLastMovie] = useState<MediaProduct>();
-  const [selfChannel, setChannelName] = useState<Channel>();
+  const [currentChannel, setChannel] = useState<Channel>();
 
   useEffect(() => {
-    let mediaProduct1 = new MediaProduct({
-      _id: "id1",
-      score: 5,
-      release_date: new Date(),
-      name: "Kung Fu Panda",
-      thumbnail_url: "https://img1.evosis.org/movie/629/icon/icon0.png",
-    });
-    let mediaProduct2 = new MediaProduct({
-      _id: "id2",
-      score: 5,
-      release_date: new Date(),
-      name: "Inception",
-      thumbnail_url:
-        "https://bsaber.com/wp-content/uploads/2019/05/18598-20226.jpg",
-    });
-    let mediaProduct3 = new MediaProduct({
-      _id: "id3",
-      score: 4.7,
-      release_date: new Date(),
-      name: "Tenet",
-      thumbnail_url:
-        "https://images.pexels.com/users/avatars/3485071/watch-online-tenet-2020-free-hd-full-movie-969.jpeg?w=256&h=256&fit=crop&auto=compress",
-    });
-    let channel2 = new Channel({
-      _id: "id2",
-      name: "Beyin Yakanlar",
-      medias: [mediaProduct1, mediaProduct2, mediaProduct3, mediaProduct3],
-    });
+    let _id = props.match.params.id
+    const options: RequestInit = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    }
+    fetch(`http://localhost:5000/channel/${_id}`, options)
+      .then(res => {
+        res.json().then(result => {
+          console.log('result ', result)
+          if (result.failed) {
+          } else if (result.success) {
+            let channel = new Channel(result.data)
+            console.log('channel ', channel)
+            setChannel(channel)
+          }
+        })
+      })
+    // let mediaProduct1 = new MediaProduct({
+    //   _id: "id1",
+    //   score: 5,
+    //   release_date: new Date(),
+    //   name: "Kung Fu Panda",
+    //   thumbnail_url: "https://img1.evosis.org/movie/629/icon/icon0.png",
+    // });
+    // let mediaProduct2 = new MediaProduct({
+    //   _id: "id2",
+    //   score: 5,
+    //   release_date: new Date(),
+    //   name: "Inception",
+    //   thumbnail_url:
+    //     "https://bsaber.com/wp-content/uploads/2019/05/18598-20226.jpg",
+    // });
+    // let mediaProduct3 = new MediaProduct({
+    //   _id: "id3",
+    //   score: 4.7,
+    //   release_date: new Date(),
+    //   name: "Tenet",
+    //   thumbnail_url:
+    //     "https://images.pexels.com/users/avatars/3485071/watch-online-tenet-2020-free-hd-full-movie-969.jpeg?w=256&h=256&fit=crop&auto=compress",
+    // });
+    // let channel2 = new Channel({
+    //   _id: "id2",
+    //   name: "Beyin Yakanlar",
+    //   medias: [mediaProduct1, mediaProduct2, mediaProduct3, mediaProduct3],
+    // });
 
-    let channelID = props.match.params.id;
-    setChannelID(channelID);
-    setChannelName(channel2);
-    setLastMovie(mediaProduct3);
+    // let channelID = props.match.params.id;
+    // setChannelID(channelID);
+    // setChannel(channel2);
+    // setLastMovie(mediaProduct3);
   }, []);
 
-  function onMoviePressed(media: MediaProduct): void {}
+  function onMoviePressed(media: MediaProduct): void { }
 
   return (
     <div className="fill-window" style={styles.container}>
@@ -79,15 +96,15 @@ function ChannelPage(props: any): JSX.Element {
             }}
           >
             {" "}
-            {"<<" + selfChannel?.name}
+            {"<<" + currentChannel?.name}
           </p>
         </button>
         <div
           style={{ display: "flex", flexDirection: "row", alignItems: "left" }}
         >
-          {selfChannel?.medias.map((media) => (
+          {currentChannel?.medias.map((media) => (
             <button style={styles.button} onClick={() => onMoviePressed(media)}>
-              <img style={{ width: 128, height: 128 }} src={media.thumbnail_url } />
+              <img style={{ width: 128, height: 128 }} src={media.thumbnail_url} />
             </button>
           ))}
         </div>
@@ -101,11 +118,11 @@ function ChannelPage(props: any): JSX.Element {
             outline: "none",
           }}
           onClick={() =>
-            history.replace(`/channel/${selfChannel?._id}/suggestions`)
+            history.replace(`/channel/${currentChannel?._id}/suggestions`)
           }
         >
           <p style={{ color: "white", textDecoration: "underline" }}>
-            {"Suggestions for " + selfChannel?.name}
+            {"Suggestions for " + currentChannel?.name}
           </p>
         </button>
       </div>

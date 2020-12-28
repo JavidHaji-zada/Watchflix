@@ -9,4 +9,13 @@ export class Cache {
     static logoutUser(): void {
         localStorage.removeItem('currentUser');
     }
+
+    static getCurrentUser(): User | CompanyUser {
+        let currentUser = JSON.parse(localStorage.getItem('currentUser') || '')
+        if (currentUser.type == 'individual') {
+            return new User(currentUser)
+        } else {
+            return new CompanyUser(currentUser)
+        }
+    }
 }
