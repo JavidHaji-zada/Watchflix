@@ -129,7 +129,55 @@ app.post("/register", (req, res) => {
 	}
 });
 
- app.post("/login", (req, res) => {
+app.get("/profile", function (req, res) {
+	const { type, new_username, name, surname, password } = req.body;
+	console.log("go to profile");
+	
+	if(type == "company")
+	{
+		let sql = "UPDATE User SET username = ? , fullname = ?, password = ? WHERE username = ?;";
+		let values = [[ new_username, name+surname, password]];
+		con.query(sql,[values], (error) => 	
+		{		
+		if (error) {
+			console.log("err ", error);
+			res.send({
+				code: 400,
+				failed: "error occured",
+			});
+		} else {
+			res.send({
+				code: 200,
+				success: "Profile change succesfully",
+			});
+		}
+	});
+    }
+	else
+	{
+		let sql = "UPDATE CompanyUser SET username = ? , fullname = ?, password = ? WHERE username = ?;";
+		let values = [[ new_username, name+surname, password]];
+		con.query(sql,[values], (error) => 	
+		{		
+		if (error) {
+			console.log("err ", error);
+			res.send({
+				code: 400,
+				failed: "error occured",
+			});
+		} else {
+			res.send({
+				code: 200,
+				success: "Profile change succesfully",
+			});
+		}
+	});
+	}
+	
+});
+
+ 
+app.post("/login", (req, res) => {
 	const { type, username, password } = req.body;
 	console.log("inside login");
  	if (type == "company") {
