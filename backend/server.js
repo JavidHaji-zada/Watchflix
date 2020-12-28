@@ -155,6 +155,46 @@ app.post("/new_channel", (req, res) => {
 	);
 });
 
+app.get("/series", (req, res) => {
+	con.query(
+		"SELECT * FROM Series JOIN MediaProduct on Series.m_id = MediaProduct.m_id",
+		(error, series) => {
+			if (error) {
+				res.send({
+					code: 400,
+					failed: "Could not get series",
+				});
+			} else {
+				res.send({
+					code: 200,
+					success: "Fetched series",
+					data: series,
+				});
+			}
+		}
+	);
+});
+
+app.get("/movies", (req, res) => {
+	con.query(
+		"SELECT * FROM Movie JOIN MediaProduct on Movie.m_id = MediaProduct.m_id",
+		(error, movies) => {
+			if (error) {
+				res.send({
+					code: 400,
+					failed: "Could not get movies",
+				});
+			} else {
+				res.send({
+					code: 200,
+					success: "Fetched movies",
+					data: movies,
+				});
+			}
+		}
+	);
+});
+
 app.get(`/medias/:channel_id`, (req, res) => {
 	const { channel_id } = req.params;
 	con.query(
