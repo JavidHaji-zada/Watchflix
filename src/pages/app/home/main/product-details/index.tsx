@@ -5,9 +5,14 @@ import { MediaProduct } from "../../../../../shared/models/media-product";
 import { Comment } from "../../../../../shared/models/comment";
 import { APP_COLORS } from "../../../../../shared/colors";
 import { useHistory } from "react-router-dom";
-import { Button, Form,  Dropdown, DropdownButton } from "react-bootstrap";
+import { Button, Form,  Dropdown, DropdownButton, Modal } from "react-bootstrap";
 
 function MovieDetails(props: any): JSX.Element {
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   const [movie, setMovie] = useState<MediaProduct>();
   const [comment_content, setContent] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
@@ -211,11 +216,30 @@ function MovieDetails(props: any): JSX.Element {
           <Dropdown.Item
             onClick={() => {
               createGroup();
+              handleShow();
             }}
           >
             Create Group
           </Dropdown.Item>
         </DropdownButton>
+        <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        
+        <Modal.Body style = {{display: "flex", alignItems: "center", flexDirection: "column"}}>
+          <p style = {{fontSize: 24}}>Here is id for your group:</p>
+          <p style = {{fontSize: 24, fontWeight: "bold"}}> 000000 </p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="danger">Got it!</Button>
+        </Modal.Footer>
+      </Modal>
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <Form.Group controlId="formBasicEmail" style={{ margin: 20 }}>
