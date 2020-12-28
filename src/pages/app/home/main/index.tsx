@@ -13,7 +13,7 @@ function Main(): JSX.Element {
   const [state, setState] = useState<MainState>("friends");
 
   return (
-    <div style={{ ...styles.container, flexDirection: "column" }}>
+    <div  style={{ ...styles.container, flexDirection: "column" }}>
       <MainHeader changeState={setState} />
       {state == "default" && (
         <div style={styles.container}>
