@@ -121,7 +121,48 @@ function Friends(): JSX.Element {
 			});
 		});
 	}
-	function deleteRequest(username: string) {}
+	function deleteRequest(username: string) {
+		let request = {
+			username1: username,
+			username2: Cache.getCurrentUser()?.username,
+		};
+		const options: RequestInit = {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(request),
+		};
+		setNewFriend("");
+		fetch("http://localhost:5000/remove_request", options).then((res) => {
+			res.json().then((result) => {
+				console.log("res ", result);
+				if (result.failed) {
+					setRequestError(result.failed);
+				} else {
+					fetch(`http://localhost:5000/user/${username}`, {
+						method: "GET",
+						headers: { "Content-Type": "application/json" },
+					}).then((res) => {
+						res.json().then((result) => {
+							if (result.failed) {
+								setRequestError(result.failed);
+							} else {
+								console.log("result ", result.data);
+								let user = new User(result.data);
+								let curRequests = receivedRequests.filter(
+									(request: any) =>
+										!(
+											request.username1 == username &&
+											request.username2 == Cache.getCurrentUser()?.username
+										)
+								);
+								setReceived(curRequests);
+							}
+						});
+					});
+				}
+			});
+		});
+	}
 	return (
 		<div style={{ flex: 1, fontSize: 24, color: "white" }}>
 			<div

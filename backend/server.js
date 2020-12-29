@@ -600,6 +600,29 @@ app.post("/accept_request", (req, res) => {
 	);
 });
 
+app.post("/remove_request", (req, res) => {
+	const { username1, username2 } = req.body;
+	let values = [[[username1, username2]]];
+	con.query(
+		"DELETE FROM request WHERE username1 = ? AND username2 = ?",
+		[username1, username2],
+		(error, result) => {
+			if (error) {
+				console.log("error deletion ", error);
+				res.send({
+					code: 400,
+					failed: "Could not delete request",
+				});
+			} else {
+				res.send({
+					code: 200,
+					success: "Success",
+				});
+			}
+		}
+	);
+});
+
 app.post("/new_watch", (req, res) => {
 	const { username, m_id, watch_date } = req.body;
 	let values = [[username, m_id, watch_date, 1]];
@@ -785,6 +808,33 @@ app.post("/update_profile", (req, res) => {
 			}
 		});
 	}
+});
+
+app.post("/upload", (req, res) => {
+	const { release_date, name, publisher } = req.body;
+	console.log("req body ", req.body);
+	let _id = generateRandomID(12);
+	let values = [[_id, name, publisher, release_date]];
+	con.query(
+		"INSERT INTO MediaProduct (m_id, mp_name,publisher,release_date) VALUES?",
+		[values],
+		(err, result) => {
+			if (err) {
+				res.send({
+					code: 400,
+					failed: "Failed to upload",
+				});
+			} else {
+				con.query("INSERT INTO Movie (m_id, video_url) VALUES?", [
+					[[_id, "not available"]],
+				]);
+				res.send({
+					code: 200,
+					success: "Upload Successfull",
+				});
+			}
+		}
+	);
 });
 
 let server = app.listen(5000, function () {

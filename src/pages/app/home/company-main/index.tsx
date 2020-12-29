@@ -10,7 +10,6 @@ export type CompanyMainState =
   | "default"
   | "search"
   | "profile"
-  | "log_out"
   | "upload"
   | "episodeUpload";
 export type MediaTypeState = "empty" | "movie" | "series";
@@ -39,9 +38,6 @@ function MainCompany(): JSX.Element {
         <div style={styles.container}>
           <Profile />
         </div>
-      )}
-      {state == "log_out" && (
-        <div style={{ color: "white" }}>I am sea case</div>
       )}
       {state == "upload" && (
         <div style={{ color: "white" }}>

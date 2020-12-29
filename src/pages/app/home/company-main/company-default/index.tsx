@@ -31,32 +31,32 @@ function Default(props: DefaultProps): JSX.Element {
 
   useEffect(() => {
     // get last uploaded files
-    let products = [];
-    let mediaProduct1 = new MediaProduct({
-      _id: "id1",
-      score: 5,
-      release_date: new Date(),
-      name: "Kung Fu Panda",
-      thumbnail_url: "https://img1.evosis.org/movie/629/icon/icon0.png",
-    });
-    let mediaProduct2 = new MediaProduct({
-      _id: "id2",
-      score: 5,
-      release_date: new Date(),
-      name: "Inception",
-      thumbnail_url:
-        "https://bsaber.com/wp-content/uploads/2019/05/18598-20226.jpg",
-    });
-    let mediaProduct3 = new MediaProduct({
-      _id: "id3",
-      score: 4.7,
-      release_date: new Date(),
-      name: "Tenet",
-      thumbnail_url:
-        "https://images.pexels.com/users/avatars/3485071/watch-online-tenet-2020-free-hd-full-movie-969.jpeg?w=256&h=256&fit=crop&auto=compress",
-    });
-    products.push(mediaProduct1, mediaProduct2, mediaProduct3);
-    setProducts(products);
+    // let products = [];
+    // let mediaProduct1 = new MediaProduct({
+    //   _id: "id1",
+    //   score: 5,
+    //   release_date: new Date(),
+    //   name: "Kung Fu Panda",
+    //   thumbnail_url: "https://img1.evosis.org/movie/629/icon/icon0.png",
+    // });
+    // let mediaProduct2 = new MediaProduct({
+    //   _id: "id2",
+    //   score: 5,
+    //   release_date: new Date(),
+    //   name: "Inception",
+    //   thumbnail_url:
+    //     "https://bsaber.com/wp-content/uploads/2019/05/18598-20226.jpg",
+    // });
+    // let mediaProduct3 = new MediaProduct({
+    //   _id: "id3",
+    //   score: 4.7,
+    //   release_date: new Date(),
+    //   name: "Tenet",
+    //   thumbnail_url:
+    //     "https://images.pexels.com/users/avatars/3485071/watch-online-tenet-2020-free-hd-full-movie-969.jpeg?w=256&h=256&fit=crop&auto=compress",
+    // });
+    // products.push(mediaProduct1, mediaProduct2, mediaProduct3);
+    // setProducts(products);
   }, []);
   return (
     <div style={{ ...styles.big_container, flexDirection: "column" }}>

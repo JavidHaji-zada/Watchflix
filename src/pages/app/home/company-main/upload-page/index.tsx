@@ -4,9 +4,11 @@ import { EndOfLineState, isElementAccessExpression } from "typescript";
 import { CompanyMainState } from "..";
 
 import { APP_COLORS } from "../../../../../shared/colors";
+import { Cache } from "../../../../../shared/libs/cache";
 import { MediaService } from "../../../../../shared/libs/media-service";
 import { Genre } from "../../../../../shared/models/genre";
 import { MediaProduct } from "../../../../../shared/models/media-product";
+import { User } from "../../../../../shared/models/user";
 import UploadEpisode from "./episode-upload";
 interface UploadProps {
   mediaProduct: string;
@@ -26,20 +28,20 @@ type GenreState = {
 function Upload(props: UploadProps): JSX.Element {
 
   const [name, setName] = useState("");
-  const [date, setRelease] = useState("");
+  const [date, setRelease] = useState(new Date());
   const [product, setProduct] = useState("");
   let count = 0;
 
   const [enableButton, setButton] = useState(true);
   const handleButton = () => setButton(
-    date == "" || name == "" || count == 0
+    name == "" || count == 0
   );
 
   const { mediaProduct, changeState } = props;
 
   const genres = MediaService.getGenres();
-  const [uploaded , setUploaded]= useState<MediaProduct[]>([]);;
-    const handleUpload = (MediaProduct: any) => { setUploaded([...uploaded, MediaProduct])};
+  const [uploaded, setUploaded] = useState<MediaProduct[]>([]);;
+  const handleUpload = (MediaProduct: any) => { setUploaded([...uploaded, MediaProduct]) };
 
   const [genreStates, setGenreStates] = useState<GenreState[]>([]);
   const [updateScreen, setUpdateScreen] = useState(false);
@@ -81,7 +83,7 @@ function Upload(props: UploadProps): JSX.Element {
               className="col-sm-10"
               type="name"
               onChange={(event) => setName(event.target.value)}
-              onClick = {() => {handleButton();}}
+              onClick={() => { handleButton(); }}
             />
           </Col>
         </Form.Group>
@@ -96,8 +98,8 @@ function Upload(props: UploadProps): JSX.Element {
               type="date"
               name="dob"
               placeholder="Date of Birth"
-              onChange={(event) => setRelease(event.target.value)}
-              onClick = {() => {handleButton();}}
+              onChange={(event) => setRelease(new Date(event.target.value))}
+              onClick={() => { handleButton(); }}
             />
           </Col>
         </Form.Group>
@@ -114,7 +116,7 @@ function Upload(props: UploadProps): JSX.Element {
                 type="checkbox"
                 label={genre.name}
                 onClick={() => {
-                  
+
                   genreStates[index].checked = !genreStates[index].checked;
                   if (genreStates[index].checked) {
                     count++;
@@ -142,7 +144,7 @@ function Upload(props: UploadProps): JSX.Element {
                   className="custom-file-input"
                   id="inputGroupFile01"
                   onChange={(event) => setProduct(event.target.value)}
-                  onClick = {() => {handleButton();}}
+                  onClick={() => { handleButton(); }}
                 ></input>
                 <label className="custom-file-label" htmlFor="inputGroupFile01">
                   Choose file
@@ -154,24 +156,42 @@ function Upload(props: UploadProps): JSX.Element {
               type="submit"
               style={{ display: "flex", alignSelf: "flex-end" }}
               disabled={enableButton}
-              onClick = {() => {changeState("default");}}
+              onClick={() => {
+                const options: RequestInit = {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    release_date: User.formatDate(date),
+                    name,
+                    publisher: Cache.getCurrentUser()?.username,
+                  }),
+                };
+                fetch("http://localhost:5000/upload", options)
+                  .then(res => {
+                    res.json().then(result => {
+                      if (result.success) {
+                        changeState('default')
+                      }
+                    })
+                  })
+              }}
             >
               Finish
             </Button>
           </div>
         ) : (
-          <Button
-            variant="danger"
-            type="next"
-            style={{ display: "flex", alignSelf: "flex-end" }}
-            disabled={enableButton}
-            onClick = {() => {changeState("episodeUpload");}}
-          >
-            Next
-          </Button>
-        )}
+            <Button
+              variant="danger"
+              type="next"
+              style={{ display: "flex", alignSelf: "flex-end" }}
+              disabled={enableButton}
+              onClick={() => { changeState("episodeUpload"); }}
+            >
+              Next
+            </Button>
+          )}
       </Form>
-       
+
     </div>
   );
 }

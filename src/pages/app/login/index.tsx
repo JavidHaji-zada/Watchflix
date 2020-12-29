@@ -75,6 +75,7 @@ function Login(): JSX.Element {
     }
 
     function login(): void {
+        console.log('usertype ', userType)
 
         if (userType == "individual") {
             // complete registration for individual
@@ -92,6 +93,7 @@ function Login(): JSX.Element {
                             setError(result.failed)
                         } else if (result.success) {
                             let user = new User(result.data)
+                            user.type = 'individual'
                             Cache.setCurrenUser(user)
                             history.replace('/app')
                         }
@@ -114,6 +116,7 @@ function Login(): JSX.Element {
                             setError(result.failed)
                         } else if (result.success) {
                             let user = new CompanyUser(result.data)
+                            user.type = 'company'
                             Cache.setCurrenUser(user)
                             history.replace('/app')
                         }

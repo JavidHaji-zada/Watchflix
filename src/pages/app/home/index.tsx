@@ -26,6 +26,7 @@ function Home(): JSX.Element {
   }
 
   function isCompanyUser(): boolean {
+    let currentUser = Cache.getCurrentUser()
     return currentUser?.type === 'company';
   }
 

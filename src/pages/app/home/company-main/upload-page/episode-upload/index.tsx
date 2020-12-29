@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Col, Form } from "react-bootstrap";
 
-import NumericInput from "react-numeric-input";
 import { CompanyMainState } from "../..";
 import { Episode } from "../../../../../../shared/models/episode";
 

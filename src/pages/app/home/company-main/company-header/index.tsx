@@ -3,13 +3,17 @@ import { Button, ButtonGroup, Dropdown, DropdownButton } from "react-bootstrap";
 import { CompanyMainState } from "../index";
 import { APP_STYLES } from "../../../../../shared/styles";
 import { Cache } from "../../../../../shared/libs/cache";
+import { useHistory } from "react-router-dom";
 
 interface CompanyHeaderProps {
   changeState: (state: CompanyMainState) => void;
 }
 
 function CompanyHeader(props: CompanyHeaderProps): JSX.Element {
+  const history = useHistory()
+
   const { changeState } = props;
+
   return (
     <div
       style={{
@@ -20,18 +24,21 @@ function CompanyHeader(props: CompanyHeaderProps): JSX.Element {
       }}
     >
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <h1
-          style={{
-            ...APP_STYLES.headerStyle,
-            fontWeight: "bold",
-            height: 40,
-          }}
+        <button
+          style={{ backgroundColor: 'transparent', borderWidth: 0, outline: 'none' }}
           onClick={() => {
             changeState("default");
-          }}
-        >
-          Watchflix
+          }}>
+          <h1
+            style={{
+              ...APP_STYLES.headerStyle,
+              fontWeight: "bold",
+              height: 40,
+            }}
+          >
+            Watchflix
         </h1>
+        </button>
 
       </div>
       <div
@@ -57,7 +64,8 @@ function CompanyHeader(props: CompanyHeaderProps): JSX.Element {
           </Dropdown.Item>
           <Dropdown.Item
             onClick={() => {
-              changeState("log_out");
+              Cache.logoutUser()
+              history.replace('/app')
             }}
           >
             Log out

@@ -12,7 +12,6 @@ export class Cache {
 
     static getCurrentUser(): User | CompanyUser | undefined {
         let currentUser = localStorage.getItem('currentUser')
-        console.log('current user ', currentUser)
         if (currentUser != null) {
             let curUser = JSON.parse(currentUser || '')
             if (curUser != null) {
