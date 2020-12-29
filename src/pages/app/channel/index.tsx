@@ -5,6 +5,7 @@ import { Channel } from "../../../shared/models/channel";
 import { MediaProduct } from "../../../shared/models/media-product";
 
 import { useHistory } from "react-router-dom";
+import Media from "../../../shared/components/media";
 
 function ChannelPage(props: any): JSX.Element {
   const history = useHistory();
@@ -100,9 +101,11 @@ function ChannelPage(props: any): JSX.Element {
                   <div style={{ color: 'red', fontSize: 24 }}>No media found!</div>
                 ) : (
                     currentChannel?.medias.map((media) => (
-                      <button style={styles.button} onClick={() => onMoviePressed(media)}>
-                        <img style={{ width: 128, height: 128 }} src={media.thumbnail_url} />
-                      </button>
+
+                      <Media media={media} />
+                      // <button style={styles.button} onClick={() => onMoviePressed(media)}>
+                      // <img style={{ width: 128, height: 128 }} src={media.thumbnail_url} />
+                      // </button>
                     ))
                   )
               )

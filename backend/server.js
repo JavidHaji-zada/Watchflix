@@ -46,10 +46,17 @@ con.connect((err) => {
 // 	});
 // });
 
-con.query(
-	"CREATE TABLE IF NOT EXISTS request(username1 VARCHAR(16) NOT NULL, username2 VARCHAR(16) NOT NULL, PRIMARY KEY (username1, username2), FOREIGN KEY(username1) REFERENCES User(username), FOREIGN KEY(username2) REFERENCES User(username)) ENGINE = Innodb;"
-);
-
+// con.query(
+// 	"CREATE TRIGGER accept_friend AFTER INSERT ON friend" +
+// 		" FOR EACH ROW" +
+// 		" BEGIN" +
+// 		" DELETE FROM request WHERE username1=NEW.username1 AND username2=NEW.username2;" +
+// 		" END",
+// 	[],
+// 	(err) => {
+// 		console.log("err ", err);
+// 	}
+// );
 app.get("/get", function (req, res) {
 	res.send({ a: "Hello World!" });
 });
@@ -481,6 +488,33 @@ app.get("/received_requests/:username", (req, res) => {
 	);
 });
 
+app.get("/friends/:username", (req, res) => {
+	const { username } = req.params;
+	con.query(
+		"SELECT * FROM friend WHERE username1=? OR username2=?",
+		[username, username],
+		(error, friends) => {
+			if (error) {
+				res.send({
+					code: 400,
+					failed: "Could not get friends",
+				});
+			} else {
+				let allFriends = friends.map((friend) => {
+					if (friend.username1 == username)
+						return { username: friend.username2 };
+					return { username: friend.username1 };
+				});
+				res.send({
+					code: 200,
+					success: "Fetched friends",
+					data: allFriends,
+				});
+			}
+		}
+	);
+});
+
 app.get("/user/:username", (req, res) => {
 	const { username } = req.params;
 	con.query(
@@ -493,6 +527,37 @@ app.get("/user/:username", (req, res) => {
 					success: "User fetched",
 					data: users[0],
 				});
+			}
+		}
+	);
+});
+
+app.get("/media/:id", (req, res) => {
+	const { id } = req.params;
+	con.query(
+		"SELECT * FROM MediaProduct WHERE m_id = ?",
+		[id],
+		(error, products) => {
+			if (error) {
+				console.log("error ", error);
+				res.send({
+					code: 400,
+					failed: "Cannot get channels",
+				});
+			} else {
+				console.log("channels ", products);
+				if (products.length > 0) {
+					res.send({
+						code: 200,
+						success: "Fetched browsed media",
+						data: products[0],
+					});
+				} else {
+					res.send({
+						code: 403,
+						failed: "no such product found",
+					});
+				}
 			}
 		}
 	);

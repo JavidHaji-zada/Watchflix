@@ -15,7 +15,7 @@ function Channels(): JSX.Element {
     const [search, setSearch] = useState("");
     const [channelName, setChannelName] = useState("");
     const [channelError, setChannelError] = useState("");
-    const [updateScreen, setUpdateScreen] = useState(false);
+    let [updateScreen, setUpdateScreen] = useState(0);
 
     useEffect(() => {
         // get channels
@@ -50,8 +50,10 @@ function Channels(): JSX.Element {
                                             curChannels[
                                                 curChannels.findIndex((c: any) => c._id == channel._id)
                                             ].medias = medias;
+                                            console.log('medias ', medias)
+                                            console.log('channels  ', curChannels)
                                             setChannels(curChannels);
-                                            setUpdateScreen(!updateScreen);
+                                            setUpdateScreen(updateScreen++);
                                         }
                                     })
                                     .catch((err) => {
@@ -80,7 +82,9 @@ function Channels(): JSX.Element {
         history.push(`/channel/${channel._id}`);
     }
 
-    function onMoviePressed(media: MediaProduct): void { }
+    function onMoviePressed(media: MediaProduct): void {
+        history.replace(`/browse/${media._id}`)
+    }
 
     function createChannel(): void {
         const options: RequestInit = {
@@ -171,7 +175,7 @@ function Channels(): JSX.Element {
                 </div>
             )}
             {channels.map((channel: Channel) => (
-                <div style={{ ...styles.channelContainer, flexDirection: "column" }}>
+                <div key={channel._id} style={{ ...styles.channelContainer, flexDirection: "column" }}>
                     <button
                         style={styles.button}
                         onClick={() => onChannelPressed(channel)}

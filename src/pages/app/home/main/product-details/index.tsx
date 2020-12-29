@@ -5,7 +5,7 @@ import { MediaProduct } from "../../../../../shared/models/media-product";
 import { Comment } from "../../../../../shared/models/comment";
 import { APP_COLORS } from "../../../../../shared/colors";
 import { useHistory } from "react-router-dom";
-import { Button, Form,  Dropdown, DropdownButton, Modal } from "react-bootstrap";
+import { Button, Form, Dropdown, DropdownButton, Modal } from "react-bootstrap";
 
 function MovieDetails(props: any): JSX.Element {
   const [show, setShow] = useState(false);
@@ -16,100 +16,54 @@ function MovieDetails(props: any): JSX.Element {
   const [movie, setMovie] = useState<MediaProduct>();
   const [comment_content, setContent] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
+  const [found, setFound] = useState<boolean>(true);
   const history = useHistory();
   useEffect(() => {
-    let movie = new MediaProduct({
-      _id: props.match.params.id,
-      score: 3,
-      release_date: new Date(),
-      name: "Panda 2",
-      thumbnail_url: "fsnsjhdjdjdhddjh",
-      description:
-        "Po and his friends fight to stop a peacock villain from conquering China with a deadly new weapon, but first the Dragon Warrior must come to terms with his past.",
+    const options: RequestInit = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    if (props.match.params.id) {
+      fetch(
+        `http://localhost:5000/media/${props.match.params.id}`,
+        options
+      ).then((res) => {
+        res.json().then((result) => {
+          if (result.failed) {
+            if (result.code == 403) {
+              setFound(false)
+            }
+          } else if (result.success) {
+            let product = result.data;
+            console.log(product);
+            let movie = new MediaProduct(product);
+            console.log(movie);
+            setMovie(movie);
+          }
+        });
+      });
+    }
+
+    const options2: RequestInit = {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch(
+      `http://localhost:5000/comments/${props.match.params.id}`,
+      options
+    ).then((res) => {
+      res.json().then((result) => {
+        if (result.failed) {
+        } else if (result.success) {
+          let comments = result.data.map(
+            (comment: any) => new Comment({ comment })
+          );
+          setComments(comments);
+        }
+      });
     });
-    setMovie(movie);
-    console.log(movie);
-    comments.push(
-      new Comment({
-        username: "ali balibo",
-        mid: "gggggggg",
-        c_id: "aaa",
-        r_id: "dhdjdj",
-        date: new Date(),
-        content: "meslehetdi doylu",
-      })
-    );
-    comments.push(
-      new Comment({
-        username: "ali balibo",
-        mid: "gggggggg",
-        c_id: "aaa",
-        r_id: "dhdjdj",
-        date: new Date(),
-        content: "meslehetdi doylu",
-      })
-    );
-    comments.push(
-      new Comment({
-        username: "ali balibo",
-        mid: "gggggggg",
-        c_id: "aaa",
-        r_id: "dhdjdj",
-        date: new Date(),
-        content: "meslehetdi doylu",
-      })
-    );
-    comments.push(
-      new Comment({
-        username: "ali balibo",
-        mid: "gggggggg",
-        c_id: "aaa",
-        r_id: "dhdjdj",
-        date: new Date(),
-        content: "meslehetdi doylu",
-      })
-    );
-    comments.push(
-      new Comment({
-        username: "ali balibo",
-        mid: "gggggggg",
-        c_id: "aaa",
-        r_id: "dhdjdj",
-        date: new Date(),
-        content: "meslehetdi doylu",
-      })
-    );
-    comments.push(
-      new Comment({
-        username: "ali balibo",
-        mid: "gggggggg",
-        c_id: "aaa",
-        r_id: "dhdjdj",
-        date: new Date(),
-        content: "meslehetdi doylu",
-      })
-    );
-    comments.push(
-      new Comment({
-        username: "ali balibo",
-        mid: "gggggggg",
-        c_id: "aaa",
-        r_id: "dhdjdj",
-        date: new Date(),
-        content: "meslehetdi doylu",
-      })
-    );
-    comments.push(
-      new Comment({
-        username: "ali balibo",
-        mid: "gggggggg",
-        c_id: "aaa",
-        r_id: "dhdjdj",
-        date: new Date(),
-        content: "meslehetdi doylu",
-      })
-    );
   }, []);
+
   function likeMovie() {
     //like movie
   }
@@ -123,163 +77,179 @@ function MovieDetails(props: any): JSX.Element {
   function commentMovie() {
     //Comment
   }
-  function createGroup()
-  {
+  function createGroup() {
     //create Group
   }
   function renderInner(): JSX.Element {
-    return (
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          backgroundColor: "#333333",
-        }}
-      >
-        <img
-          style={{ margin: 20, flex: 1 }}
-          src="https://i.pinimg.com/564x/9c/4e/41/9c4e413ee194ff1ffc1d7bf3dbb3f3d2.jpg"
-        />
+    if (found) {
+      return (
         <div
           style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <h1 style={{ textAlign: "start", color: "white", margin: 20 }}>
-              {movie?.name}
-            </h1>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Button
-                style={styles.nextButton}
-                onClick={likeMovie}
-                variant="danger"
-              >
-                like
-              </Button>
-              <Button
-                style={styles.nextButton}
-                onClick={dislikeMovie}
-                variant="danger"
-              >
-                dislike
-              </Button>
-            </div>
-          </div>
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <h1 style={{ color: "white", margin: 20 }}>
-              Score: {movie?.score}
-            </h1>
-          </div>
-        </div>
-        <div
-          style={{
+            flex: 1,
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
+            backgroundColor: "#333333",
           }}
         >
-          <p style={{ marginLeft: 20, color: "white" }}>{movie?.description}</p>
-          <p style={{ marginLeft: 20, color: "white" }}>Producer</p>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-end",
-          }}
-        >
-        <DropdownButton
-          variant="danger"
-          className=".transparent-button"
-          style={styles.nameButton}
-          id="dropdown-basic-button"
-          title="Start Watching" /** TODO: change into user.fullname */
-        >
-          <Dropdown.Item
-            onClick={() => {
-              watch();
+          <img
+            style={{ margin: 20, flex: 1 }}
+            src="https://i.pinimg.com/564x/9c/4e/41/9c4e413ee194ff1ffc1d7bf3dbb3f3d2.jpg"
+          />
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
             }}
           >
-            Start
-          </Dropdown.Item>
-          <Dropdown.Item
-            onClick={() => {
-              createGroup();
-              handleShow();
-            }}
-          >
-            Create Group
-          </Dropdown.Item>
-        </DropdownButton>
-        <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        
-        <Modal.Body style = {{display: "flex", alignItems: "center", flexDirection: "column"}}>
-          <p style = {{fontSize: 24}}>Here is id for your group:</p>
-          <p style = {{fontSize: 24, fontWeight: "bold"}}> 000000 </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="danger">Got it!</Button>
-        </Modal.Footer>
-      </Modal>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <Form.Group controlId="formBasicEmail" style={{ margin: 20 }}>
-            <Form.Label></Form.Label>
-            <Form.Control
-              onChange={(event) => setContent(event.target.value)}
-              type="text"
-              placeholder="comment"
-            />
-          </Form.Group>
-          <Button
-            style={styles.nextButton}
-            onClick={commentMovie}
-            variant="danger"
-          >
-            post comment
-          </Button>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <h4 style={{ color: "white", margin: 20 }}>Comments</h4>
-          {comments.map((comment) => (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                justifyContent: "center",
-                margin: 20,
-                backgroundColor: "gray",
-                padding: 10,
-                borderRadius: 10,
-              }}
-            >
-              <p style={{ color: "blue" }}>{comment.username}</p>
-              <p style={{ color: "white" }}>{comment.c_content}</p>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <h1 style={{ textAlign: "start", color: "white", margin: 20 }}>
+                {movie?.name}
+              </h1>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Button
+                  style={styles.nextButton}
+                  onClick={likeMovie}
+                  variant="danger"
+                >
+                  like
+                </Button>
+                <Button
+                  style={styles.nextButton}
+                  onClick={dislikeMovie}
+                  variant="danger"
+                >
+                  dislike
+                </Button>
+              </div>
             </div>
-          ))}
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <h1 style={{ color: "white", margin: 20 }}>
+                Score: {movie?.score}
+              </h1>
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+            }}
+          >
+            <p style={{ marginLeft: 20, color: "white" }}>
+              {movie?.description}
+            </p>
+            <p style={{ marginLeft: 20, color: "white" }}>
+              Producer: {movie?.publisher}
+            </p>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+            }}
+          >
+            <DropdownButton
+              variant="danger"
+              className=".transparent-button"
+              style={styles.nameButton}
+              id="dropdown-basic-button"
+              title="Start Watching" /** TODO: change into user.fullname */
+            >
+              <Dropdown.Item
+                onClick={() => {
+                  watch();
+                }}
+              >
+                Start
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  createGroup();
+                  handleShow();
+                }}
+              >
+                Create Group
+              </Dropdown.Item>
+            </DropdownButton>
+            <Modal
+              show={show}
+              onHide={handleClose}
+              backdrop="static"
+              keyboard={false}
+            >
+              <Modal.Body
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <p style={{ fontSize: 24 }}>Here is id for your group:</p>
+                <p style={{ fontSize: 24, fontWeight: "bold" }}> 000000 </p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                  Close
+                </Button>
+                <Button variant="danger">Got it!</Button>
+              </Modal.Footer>
+            </Modal>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <Form.Group controlId="formBasicEmail" style={{ margin: 20 }}>
+              <Form.Label></Form.Label>
+              <Form.Control
+                onChange={(event) => setContent(event.target.value)}
+                type="text"
+                placeholder="comment"
+              />
+            </Form.Group>
+            <Button
+              style={styles.nextButton}
+              onClick={commentMovie}
+              variant="danger"
+            >
+              post comment
+            </Button>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <h4 style={{ color: "white", margin: 20 }}>Comments</h4>
+            {comments.map((comment) => (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "center",
+                  margin: 20,
+                  backgroundColor: "gray",
+                  padding: 10,
+                  borderRadius: 10,
+                }}
+              >
+                <p style={{ color: "blue" }}>{comment.username}</p>
+                <p style={{ color: "white" }}>{comment.c_content}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div>
+          <h1 style={{ margin: 40 }}>FILM NOT FOUND</h1>
+        </div>
+      );
+    }
   }
   return <div>{renderInner()}</div>;
 }
@@ -338,7 +308,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     display: "flex",
-    margin:20
+    margin: 20,
   },
 };
 

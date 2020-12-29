@@ -9,7 +9,7 @@ import Series from "./series-page";
 export type MainState = "default" | "series" | "movies" | "friends" | "groups" | "profile";
 
 function Main(): JSX.Element {
-  const [state, setState] = useState<MainState>("friends");
+  const [state, setState] = useState<MainState>("default");
 
   return (
     <div style={{ ...styles.container, flexDirection: "column" }}>

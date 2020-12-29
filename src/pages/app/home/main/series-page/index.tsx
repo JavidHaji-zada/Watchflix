@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { MediaProduct } from "../../../../../shared/models/media-product";
 import "./series.css";
 
 function Series(): JSX.Element {
+  const history = useHistory()
   const [allSeries, setSeries] = useState<MediaProduct[]>([]);
 
   useEffect(() => {
@@ -20,7 +22,9 @@ function Series(): JSX.Element {
     });
   }, []);
 
-  function onMoviePressed(media: MediaProduct): void { }
+  function onMoviePressed(media: MediaProduct): void {
+    history.push(`/browse/${media._id}`)
+  }
   return (
     <div className="fill-window" style={{ ...styles.container, flexDirection: 'column', flexWrap: 'wrap' }}>
       <h1>Series</h1>
@@ -29,6 +33,7 @@ function Series(): JSX.Element {
         {allSeries?.map((media: MediaProduct) => (
           <button key={media._id} style={styles.button} onClick={() => onMoviePressed(media)}>
             <img style={{ width: 128, height: 128 }} src={media.thumbnail_url} />
+            <p style={{ color: 'white' }}>{media.name}</p>
           </button>
         ))}
       </div>

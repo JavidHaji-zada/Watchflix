@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Col, Form, InputGroup, Button } from "react-bootstrap";
-import { FaHandMiddleFinger } from "react-icons/fa";
-import { FaSearch } from "react-icons/fa";
-import { Channel } from "../../../../../shared/models/channel";
 import { MediaProduct } from "../../../../../shared/models/media-product";
 
 import { useHistory } from "react-router-dom";
 
 function Movie(): JSX.Element {
+  const history = useHistory()
 
   const [movies, setMovies] = useState<MediaProduct[]>([]);
 
@@ -26,17 +23,19 @@ function Movie(): JSX.Element {
     });
   }, []);
 
-  function onMoviePressed(media: MediaProduct): void { }
+  function onMoviePressed(media: MediaProduct): void {
+    history.push(`/browse/${media._id}`)
+  }
   return (
-    <div className="fill-window" style={styles.container}>
-
-
+    <div className="fill-window" style={{ ...styles.container, flexDirection: 'column', flexWrap: 'wrap' }}>
+      <h1>Movies</h1>
       <div
         style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
       >
         {movies?.map((media: MediaProduct) => (
           <button key={media._id} style={styles.button} onClick={() => onMoviePressed(media)}>
             <img style={{ width: 128, height: 128 }} src={media.thumbnail_url} />
+            <p style={{ color: 'white' }}>{media.name}</p>
           </button>
         ))}
       </div>

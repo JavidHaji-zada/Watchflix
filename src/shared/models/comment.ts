@@ -8,10 +8,10 @@ export class Comment {
 
     constructor(details?: any) {
         this.username = details.username;
-        this.comment_id =  details.c_id;
-        this.replied_to =  details.r_id;
-        this.comment_date =  details.date;
-        this.c_content =  details.content;
-        this.mediaProduct = details.mid;
+        this.comment_id =  details.comment_id;
+        this.replied_to =  details.reply_to;
+        this.comment_date =  details.comment_date;
+        this.c_content =  details.c_content;
+        this.mediaProduct = details.m_id;
     }
 }
