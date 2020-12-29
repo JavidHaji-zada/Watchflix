@@ -15,8 +15,8 @@ export type CompanyMainState =
   | "episodeUpload";
 export type MediaTypeState = "empty" | "movie" | "series";
 function MainCompany(): JSX.Element {
-  const [state, setState] = useState<CompanyMainState>("upload");
-  const [mediaType, setMediaType] = useState<MediaTypeState>("series");
+  const [state, setState] = useState<CompanyMainState>("default");
+  const [mediaType, setMediaType] = useState<MediaTypeState>("empty");
 
   return (
     <div
@@ -50,7 +50,7 @@ function MainCompany(): JSX.Element {
       )}
       {state == "episodeUpload" && (
         <div style={{ color: "white" }}>
-          <UploadEpisode/>
+          <UploadEpisode mediaProduct={mediaType} changeState = {setState} />
         </div>
       )}
     </div>

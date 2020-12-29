@@ -6,6 +6,7 @@ import { CompanyMainState } from "..";
 import { APP_COLORS } from "../../../../../shared/colors";
 import { MediaService } from "../../../../../shared/libs/media-service";
 import { Genre } from "../../../../../shared/models/genre";
+import { MediaProduct } from "../../../../../shared/models/media-product";
 import UploadEpisode from "./episode-upload";
 interface UploadProps {
   mediaProduct: string;
@@ -37,13 +38,17 @@ function Upload(props: UploadProps): JSX.Element {
   const { mediaProduct, changeState } = props;
 
   const genres = MediaService.getGenres();
+  const [uploaded , setUploaded]= useState<MediaProduct[]>([]);;
+    const handleUpload = (MediaProduct: any) => { setUploaded([...uploaded, MediaProduct])};
 
   const [genreStates, setGenreStates] = useState<GenreState[]>([]);
   const [updateScreen, setUpdateScreen] = useState(false);
 
+
   useEffect(() => {
     let genreStates = genres.map((genre) => ({ genre, checked: false }));
     setGenreStates(genreStates);
+    setUploaded(uploaded);
   }, []);
 
   return (
@@ -149,6 +154,7 @@ function Upload(props: UploadProps): JSX.Element {
               type="submit"
               style={{ display: "flex", alignSelf: "flex-end" }}
               disabled={enableButton}
+              onClick = {() => {changeState("default");}}
             >
               Finish
             </Button>
