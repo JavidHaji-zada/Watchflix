@@ -65,7 +65,7 @@ function MainHeader(props: MainHeaderProps): JSX.Element {
           className=".transparent-button"
           style={styles.nameButton}
           id="dropdown-basic-button"
-          title={Cache.getCurrentUser().username} /** TODO: change into user.fullname */
+          title={Cache.getCurrentUser()?.username} /** TODO: change into user.fullname */
         >
           <Dropdown.Item
             onClick={() => {

@@ -10,12 +10,19 @@ export class Cache {
         localStorage.removeItem('currentUser');
     }
 
-    static getCurrentUser(): User | CompanyUser {
-        let currentUser = JSON.parse(localStorage.getItem('currentUser') || '')
-        if (currentUser.type == 'individual') {
-            return new User(currentUser)
-        } else {
-            return new CompanyUser(currentUser)
+    static getCurrentUser(): User | CompanyUser | undefined {
+        let currentUser = localStorage.getItem('currentUser')
+        console.log('current user ', currentUser)
+        if (currentUser != null) {
+            let curUser = JSON.parse(currentUser || '')
+            if (curUser != null) {
+                if (curUser.type == 'individual') {
+                    return new User(curUser)
+                } else {
+                    return new CompanyUser(curUser)
+                }
+            }
         }
+        return undefined
     }
 }

@@ -32,7 +32,7 @@ function CompanyHeader(props: CompanyHeaderProps): JSX.Element {
         >
           Watchflix
         </h1>
-        
+
       </div>
       <div
         style={{
@@ -46,7 +46,7 @@ function CompanyHeader(props: CompanyHeaderProps): JSX.Element {
           className=".transparent-button"
           style={styles.nameButton}
           id="dropdown-basic-button"
-          title={Cache.getCurrentUser().username} /** TODO: change into user.fullname */
+          title={Cache.getCurrentUser()?.username} /** TODO: change into user.fullname */
         >
           <Dropdown.Item
             onClick={() => {

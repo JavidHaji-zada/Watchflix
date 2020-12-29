@@ -5,6 +5,7 @@ import Main from "./main";
 import MainCompany from "./company-main";
 import "./home.css";
 import { CompanyUser, User } from "../../../shared/models/user";
+import { Cache } from "../../../shared/libs/cache";
 
 function Home(): JSX.Element {
   const history = useHistory();
@@ -19,15 +20,8 @@ function Home(): JSX.Element {
   }
 
   function isUserLoggedIn(): boolean {
-    let currentUser = JSON.parse(localStorage.getItem('currentUser') || '')
-    if (currentUser) {
-      if (currentUser.type == 'individual')
-        currentUser = new User(currentUser)
-      else
-        currentUser = new CompanyUser(currentUser)
-    }
-
-
+    console.log('getting user ')
+    let currentUser = Cache.getCurrentUser()
     return (!!currentUser && currentUser != null);
   }
 
@@ -37,38 +31,41 @@ function Home(): JSX.Element {
 
   return (
     <div className="fill-window" style={styles.container}>
-      {isUserLoggedIn() ? ((isCompanyUser() ? (< MainCompany />) : (<Main />))
-
-      ) : (
-          <div className="container-fluid homepage-bgimage">
-            <Button
-              onClick={onLoginClicked}
-              style={{ position: "absolute", top: 10, right: 10 }}
-              variant="danger"
-            >
-              Login
+      {
+        isUserLoggedIn() ? (
+          isCompanyUser() ?
+            <MainCompany /> :
+            <Main />
+        ) : (
+            <div className="container-fluid homepage-bgimage">
+              <Button
+                onClick={onLoginClicked}
+                style={{ position: "absolute", top: 10, right: 10 }}
+                variant="danger"
+              >
+                Login
           </Button>
-            <div style={styles.headerContainer}>
-              <h1 style={{ ...styles.headerContainer, fontWeight: "bold" }}>Watchflix</h1>
-            </div>
-            <div style={styles.sloganContainer}>
-              <h2 style={{ ...styles.sloganContainer, fontWeight: "bold" }}>Watchflix and Chill</h2>
-            </div>
-            <div
-              style={{
-                flex: 1,
-                display: "flex",
-                height: "100%",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Button onClick={onRegisterClicked} variant="danger">
-                Register Now!
+              <div style={styles.headerContainer}>
+                <h1 style={{ ...styles.headerContainer, fontWeight: "bold" }}>Watchflix</h1>
+              </div>
+              <div style={styles.sloganContainer}>
+                <h2 style={{ ...styles.sloganContainer, fontWeight: "bold" }}>Watchflix and Chill</h2>
+              </div>
+              <div
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  height: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Button onClick={onRegisterClicked} variant="danger">
+                  Register Now!
             </Button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
     </div>
   );
 }

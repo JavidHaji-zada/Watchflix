@@ -19,61 +19,63 @@ function Channels(): JSX.Element {
 
     useEffect(() => {
         // get channels
-        const options: RequestInit = {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-        };
-        fetch(
-            `http://localhost:5000/channels/${Cache.getCurrentUser().username}`,
-            options
-        ).then((res) => {
-            res.json().then((result) => {
-                if (result.failed) {
-                } else if (result.success) {
-                    let channels = result.data.map(
-                        (channel: any) => new Channel(channel)
-                    );
-                    setChannels(channels);
-                    channels.forEach((channel: any) => {
-                        fetch(`http://localhost:5000/medias/${channel._id}`, options)
-                            .then((res) => {
-                                res
-                                    .json()
-                                    .then((result) => {
-                                        if (result.failed) {
-                                        } else if (result.success) {
-                                            let medias = result.data.map(
-                                                (media: any) => new MediaProduct(media)
-                                            );
-                                            channel.medias = medias;
-                                            let curChannels = channels;
-                                            curChannels[
-                                                curChannels.findIndex((c: any) => c._id == channel._id)
-                                            ].medias = medias;
-                                            console.log('medias ', medias)
-                                            console.log('channels  ', curChannels)
-                                            setChannels(curChannels);
-                                            setUpdateScreen(updateScreen++);
-                                        }
-                                    })
-                                    .catch((err) => {
-                                        console.log("err ", err);
-                                    });
-                            })
-                            .catch((err) => {
-                                console.log("err ", err);
-                            });
-                    });
-                }
+        if (Cache.getCurrentUser()) {
+            const options: RequestInit = {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+            };
+            fetch(
+                `http://localhost:5000/channels/${Cache.getCurrentUser()?.username}`,
+                options
+            ).then((res) => {
+                res.json().then((result) => {
+                    if (result.failed) {
+                    } else if (result.success) {
+                        let channels = result.data.map(
+                            (channel: any) => new Channel(channel)
+                        );
+                        setChannels(channels);
+                        channels.forEach((channel: any) => {
+                            fetch(`http://localhost:5000/medias/${channel._id}`, options)
+                                .then((res) => {
+                                    res
+                                        .json()
+                                        .then((result) => {
+                                            if (result.failed) {
+                                            } else if (result.success) {
+                                                let medias = result.data.map(
+                                                    (media: any) => new MediaProduct(media)
+                                                );
+                                                channel.medias = medias;
+                                                let curChannels = channels;
+                                                curChannels[
+                                                    curChannels.findIndex((c: any) => c._id == channel._id)
+                                                ].medias = medias;
+                                                console.log('medias ', medias)
+                                                console.log('channels  ', curChannels)
+                                                setChannels(curChannels);
+                                                setUpdateScreen(updateScreen++);
+                                            }
+                                        })
+                                        .catch((err) => {
+                                            console.log("err ", err);
+                                        });
+                                })
+                                .catch((err) => {
+                                    console.log("err ", err);
+                                });
+                        });
+                    }
+                });
             });
-        });
-        fetch(`http://localhost:5000/last_watch/${Cache.getCurrentUser().username}`, options)
-            .then(res => {
-                res.json().then(result => {
-                    console.log('result ', result)
-                    setLastMovie(new MediaProduct(result.data))
+            fetch(`http://localhost:5000/last_watch/${Cache.getCurrentUser()?.username}`, options)
+                .then(res => {
+                    res.json().then(result => {
+                        console.log('result ', result)
+                        setLastMovie(new MediaProduct(result.data))
+                    })
                 })
-            })
+        }
     }, []);
 
     function onChannelPressed(channel: Channel): void {
@@ -90,7 +92,7 @@ function Channels(): JSX.Element {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 name: channelName,
-                username: Cache.getCurrentUser().username,
+                username: Cache.getCurrentUser()?.username,
             }),
         };
         fetch("http://localhost:5000/new_channel", options).then((res) => {

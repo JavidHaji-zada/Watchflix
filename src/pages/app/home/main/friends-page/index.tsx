@@ -16,13 +16,14 @@ function Friends(): JSX.Element {
 	const [receivedRequests, setReceived] = useState([]);
 
 	useEffect(() => {
+		if(Cache.getCurrentUser()){
 		const options: RequestInit = {
 			method: "GET",
 			headers: { "Content-Type": "application/json" },
 		};
 		fetch(
 			`http://localhost:5000/received_requests/${
-				Cache.getCurrentUser().username
+				Cache.getCurrentUser()?.username
 			}`,
 			options
 		).then((res) => {
@@ -31,7 +32,7 @@ function Friends(): JSX.Element {
 			});
 		});
 		fetch(
-			`http://localhost:5000/friends/${Cache.getCurrentUser().username}`,
+			`http://localhost:5000/friends/${Cache.getCurrentUser()?.username}`,
 			options
 		).then((res) => {
 			res.json().then((result) => {
@@ -42,6 +43,7 @@ function Friends(): JSX.Element {
 				}
 			});
 		});
+	}
 	}, []);
 
 	function sendFriendRequest() {
@@ -50,7 +52,7 @@ function Friends(): JSX.Element {
 			return;
 		}
 		let request = {
-			from: Cache.getCurrentUser().username,
+			from: Cache.getCurrentUser()?.username,
 			to: newFriend,
 		};
 		const options: RequestInit = {
@@ -77,7 +79,7 @@ function Friends(): JSX.Element {
 	function acceptRequest(username: string) {
 		let request = {
 			username1: username,
-			username2: Cache.getCurrentUser().username,
+			username2: Cache.getCurrentUser()?.username,
 		};
 		const options: RequestInit = {
 			method: "POST",
@@ -107,7 +109,7 @@ function Friends(): JSX.Element {
 									(request: any) =>
 										!(
 											request.username1 == username &&
-											request.username2 == Cache.getCurrentUser().username
+											request.username2 == Cache.getCurrentUser()?.username
 										)
 								);
 								setReceived(curRequests);

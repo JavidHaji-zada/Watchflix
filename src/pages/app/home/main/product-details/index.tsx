@@ -30,64 +30,66 @@ function MovieDetails(props: any): JSX.Element {
 
   const history = useHistory();
   useEffect(() => {
-    const options: RequestInit = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
-    if (props.match.params.id) {
+    if (Cache.getCurrentUser()) {
+      const options: RequestInit = {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      };
+      if (props.match.params.id) {
+        fetch(
+          `http://localhost:5000/media/${props.match.params.id}`,
+          options
+        ).then((res) => {
+          res.json().then((result) => {
+            if (result.failed) {
+              if (result.code == 403) {
+                setFound(false)
+              }
+            } else if (result.success) {
+              let product = result.data;
+              console.log(product);
+              let movie = new MediaProduct(product);
+              console.log(movie);
+              setMovie(movie);
+            }
+          });
+        });
+      }
       fetch(
-        `http://localhost:5000/media/${props.match.params.id}`,
+        `http://localhost:5000/comments/${props.match.params.id}`,
+        options
+      ).then((res) => {
+        res.json().then((result) => {
+          console.log('comment result ', result)
+          if (result.failed) {
+            console.log('failed to comment')
+          } else if (result.success) {
+            let comments = result.data.map(
+              (comment: any) => new Comment(comment)
+            );
+            console.log('set comments ', comments)
+            setComments(comments);
+          }
+        });
+      });
+
+      fetch(
+        `http://localhost:5000/watch/${Cache.getCurrentUser()?.username}/${props.match.params.id}`,
         options
       ).then((res) => {
         res.json().then((result) => {
           if (result.failed) {
-            if (result.code == 403) {
-              setFound(false)
-            }
           } else if (result.success) {
-            let product = result.data;
-            console.log(product);
-            let movie = new MediaProduct(product);
-            console.log(movie);
-            setMovie(movie);
+            console.log('result data ', result.data)
+            if (result.data) {
+              console.log('setting to false')
+              setFirstWatch(false)
+              setWatchStatus(new WatchStatus(result.data))
+            }
           }
         });
       });
     }
-    fetch(
-      `http://localhost:5000/comments/${props.match.params.id}`,
-      options
-    ).then((res) => {
-      res.json().then((result) => {
-        console.log('comment result ', result)
-        if (result.failed) {
-          console.log('failed to comment')
-        } else if (result.success) {
-          let comments = result.data.map(
-            (comment: any) => new Comment(comment)
-          );
-          console.log('set comments ', comments)
-          setComments(comments);
-        }
-      });
-    });
-
-    fetch(
-      `http://localhost:5000/watch/${Cache.getCurrentUser().username}/${props.match.params.id}`,
-      options
-    ).then((res) => {
-      res.json().then((result) => {
-        if (result.failed) {
-        } else if (result.success) {
-          console.log('result data ', result.data)
-          if (result.data) {
-            console.log('setting to false')
-            setFirstWatch(false)
-            setWatchStatus(new WatchStatus(result.data))
-          }
-        }
-      });
-    });
   }, []);
 
   function likeMovie() {
@@ -102,7 +104,7 @@ function MovieDetails(props: any): JSX.Element {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username: Cache.getCurrentUser().username,
+        username: Cache.getCurrentUser()?.username,
         m_id: movie?._id,
         watch_date: User.formatDateHours(new Date()),
         watch_count: watchStatus?.watch_count ? watchStatus.watch_count + 1 : 1
@@ -135,14 +137,14 @@ function MovieDetails(props: any): JSX.Element {
     comment.m_id = movie?._id || ''
     comment.c_content = "@" + replyToUser + " " + replyContent
     comment.comment_date = User.formatDate(new Date())
-    comment.username = Cache.getCurrentUser().username
+    comment.username = Cache.getCurrentUser()?.username
     comment.replied_to = replyTo
 
     let commentObj = new Comment();
     commentObj.m_id = movie?._id || ''
     commentObj.c_content = "@" + replyToUser + " " + replyContent
     commentObj.comment_date = new Date()
-    commentObj.username = Cache.getCurrentUser().username
+    commentObj.username = Cache.getCurrentUser()?.username || ''
     comment.replied_to = replyTo
 
     setReplyContent('')
@@ -181,13 +183,13 @@ function MovieDetails(props: any): JSX.Element {
     comment.m_id = movie?._id || ''
     comment.c_content = comment_content
     comment.comment_date = User.formatDate(new Date())
-    comment.username = Cache.getCurrentUser().username
+    comment.username = Cache.getCurrentUser()?.username
 
     let commentObj = new Comment();
     commentObj.m_id = movie?._id || ''
     commentObj.c_content = comment_content
     commentObj.comment_date = new Date()
-    commentObj.username = Cache.getCurrentUser().username
+    commentObj.username = Cache.getCurrentUser()?.username || ''
     const options: RequestInit = {
       method: "POST",
       headers: { "Content-Type": "application/json" },

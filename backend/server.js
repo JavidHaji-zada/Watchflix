@@ -743,6 +743,50 @@ app.post("/comment", (req, res) => {
 	);
 });
 
+app.post("/update_profile", (req, res) => {
+	const { new_username, name, surname, password, username, type } = req.body;
+
+	console.log("go to profile");
+
+	if (type == "company") {
+		let sql =
+			"UPDATE User SET username = ? , fullname = ?, password = ? WHERE username = ?;";
+		let values = [[new_username, name + surname, password, username]];
+		con.query(sql, [values], (error) => {
+			if (error) {
+				console.log("err ", error);
+				res.send({
+					code: 400,
+					failed: "error occured",
+				});
+			} else {
+				res.send({
+					code: 200,
+					success: "Profile change succesfully",
+				});
+			}
+		});
+	} else {
+		let sql =
+			"UPDATE CompanyUser SET username = ? , fullname = ?, password = ? WHERE username = ?;";
+		let values = [[new_username, name + surname, password, username]];
+		con.query(sql, [values], (error) => {
+			if (error) {
+				console.log("err ", error);
+				res.send({
+					code: 400,
+					failed: "error occured",
+				});
+			} else {
+				res.send({
+					code: 200,
+					success: "Profile change succesfully",
+				});
+			}
+		});
+	}
+});
+
 let server = app.listen(5000, function () {
 	console.log("Server is running..");
 });

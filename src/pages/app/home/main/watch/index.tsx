@@ -17,44 +17,46 @@ function Watch(props: any): JSX.Element {
   const history = useHistory();
 
   useEffect(() => {
-    const options: RequestInit = {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    };
-    if (props.match.params.id) {
-      fetch(
-        `http://localhost:5000/media/${props.match.params.id}`,
-        options
-      ).then((res) => {
-        res.json().then((result) => {
-          if (result.success) {
-            let product = result.data;
-            console.log('product ', product);
-            let movie = new MediaProduct(product);
-            console.log(movie);
-            setMovie(movie);
-          }
+    if (Cache.getCurrentUser()) {
+      const options: RequestInit = {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      };
+      if (props.match.params.id) {
+        fetch(
+          `http://localhost:5000/media/${props.match.params.id}`,
+          options
+        ).then((res) => {
+          res.json().then((result) => {
+            if (result.success) {
+              let product = result.data;
+              console.log('product ', product);
+              let movie = new MediaProduct(product);
+              console.log(movie);
+              setMovie(movie);
+            }
+          });
         });
-      });
-      fetch(
-        `http://localhost:5000/watch/${Cache.getCurrentUser().username}/${props.match.params.id}`,
-        options
-      ).then((res) => {
-        res.json().then((result) => {
-          if (result.success) {
-            console.log('result data ', result.data)
-            if (result.data) {
-              console.log('setting to false')
-              setWatchStatus(new WatchStatus(result.data))
-              if (result.data.watch_count >= 3) {
-                setMessage("You have finished watching")
-              } else {
-                setMessage("Watching in progress")
+        fetch(
+          `http://localhost:5000/watch/${Cache.getCurrentUser()?.username}/${props.match.params.id}`,
+          options
+        ).then((res) => {
+          res.json().then((result) => {
+            if (result.success) {
+              console.log('result data ', result.data)
+              if (result.data) {
+                console.log('setting to false')
+                setWatchStatus(new WatchStatus(result.data))
+                if (result.data.watch_count >= 3) {
+                  setMessage("You have finished watching")
+                } else {
+                  setMessage("Watching in progress")
+                }
               }
             }
-          }
-        });
-      })
+          });
+        })
+      }
     }
   }, []);
   function renderInner(): JSX.Element {

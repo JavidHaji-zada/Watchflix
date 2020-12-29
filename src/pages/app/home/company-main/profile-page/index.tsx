@@ -2,11 +2,34 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 
 import { APP_COLORS } from "../../../../../shared/colors";
+import { Cache } from "../../../../../shared/libs/cache";
 function Profile(): JSX.Element {
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [result, setResult] = useState('');
+
+  function saveChanges() {
+    const options: RequestInit = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        surname,
+        username: Cache.getCurrentUser()?.username,
+        password: password,
+        type: "company",
+        new_username: username
+      }),
+    };
+    fetch("http://localhost:5000/update_profile", options)
+      .then(res => {
+        res.json().then(result => {
+          setResult(result.failed || result.success)
+        })
+      })
+  }
 
   return (
     <div
@@ -20,7 +43,7 @@ function Profile(): JSX.Element {
       <div
         style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: 60 }}
       >
-        <div style={{ marginRight: 20}}>
+        <div style={{ marginRight: 20 }}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label style={{ color: "white" }}>
               Change Your Name:
@@ -73,10 +96,12 @@ function Profile(): JSX.Element {
         }}
       >
         <Button
-          variant = "danger"
+          variant="danger"
+          onClick={saveChanges}
         >
           Save Changes
         </Button>
+        <p>{result}</p>
       </div>
     </div>
   );
