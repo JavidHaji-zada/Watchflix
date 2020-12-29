@@ -837,6 +837,30 @@ app.post("/upload", (req, res) => {
 	);
 });
 
+app.post("/medias", (req, res) => {
+	const { username } = req.body;
+	con.query(
+		"SELECT * FROM MediaProduct WHERE publisher=?",
+		[username],
+		(error, result) => {
+			if (error) {
+				console.log("error ", error);
+				res.send({
+					code: 400,
+					failed: "Could not get published medias",
+				});
+			} else {
+				console.log("published medias  ", result);
+				res.send({
+					code: 200,
+					success: "fetched published medias",
+					data: result,
+				});
+			}
+		}
+	);
+});
+
 let server = app.listen(5000, function () {
 	console.log("Server is running..");
 });
