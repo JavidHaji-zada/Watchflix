@@ -67,15 +67,13 @@ function Channels(): JSX.Element {
                 }
             });
         });
-        let mediaProduct3 = new MediaProduct({
-            _id: "id3",
-            score: 4.7,
-            release_date: new Date(),
-            name: "Tenet",
-            thumbnail_url:
-                "https://images.pexels.com/users/avatars/3485071/watch-online-tenet-2020-free-hd-full-movie-969.jpeg?w=256&h=256&fit=crop&auto=compress",
-        });
-        setLastMovie(mediaProduct3);
+        fetch(`http://localhost:5000/last_watch/${Cache.getCurrentUser().username}`, options)
+            .then(res => {
+                res.json().then(result => {
+                    console.log('result ', result)
+                    setLastMovie(new MediaProduct(result.data))
+                })
+            })
     }, []);
 
     function onChannelPressed(channel: Channel): void {

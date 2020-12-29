@@ -600,6 +600,149 @@ app.post("/accept_request", (req, res) => {
 	);
 });
 
+app.post("/new_watch", (req, res) => {
+	const { username, m_id, watch_date } = req.body;
+	let values = [[username, m_id, watch_date, 1]];
+	con.query(
+		"INSERT INTO watch (username, m_id, watch_date, watch_count) VALUES ?",
+		[values],
+		(error) => {
+			if (error) {
+				res.send({
+					code: 400,
+					failed: "Error occured while channel creation",
+				});
+			} else {
+				res.send({
+					code: 200,
+					success: "watch succesfully added",
+				});
+			}
+		}
+	);
+});
+
+app.post("/update_watch", function (req, res) {
+	const { username, m_id, watch_date, watch_count } = req.body;
+	let sql =
+		"UPDATE watch SET watch_count = ?, watch_date = ? WHERE username = ? AND m_id = ?;";
+	let values = [watch_count, watch_date, username, m_id];
+	con.query(sql, [watch_count, watch_date, username, m_id], (error) => {
+		if (error) {
+			console.log("err ", error);
+			res.send({
+				code: 400,
+				failed: "error occured",
+			});
+		} else {
+			res.send({
+				code: 200,
+				success: "watch_count and watch_date updated",
+			});
+		}
+	});
+});
+
+app.get("/watch/:username/:m_id", (req, res) => {
+	const { username, m_id } = req.params;
+	con.query(
+		"SELECT * FROM watch WHERE username = ? AND m_id = ?",
+		[username, m_id],
+		(error, watches) => {
+			if (error) {
+				console.log("error ", error);
+				res.send({
+					code: 400,
+					failed: "Cannot get channels",
+				});
+			} else {
+				console.log("channels ", watches);
+				res.send({
+					code: 200,
+					success: "Fetched browsed media",
+					data: watches[0],
+				});
+			}
+		}
+	);
+});
+
+app.get("/last_watch/:username", (req, res) => {
+	const { username } = req.params;
+	// "SELECT * FROM ( SELECT m_id, MAX(watch_date) AS max_date FROM watch GROUP BY username) r JOIN watch s ON s.m_id = r.m_id AND s.watch_date = r.max_date ORDER BY s.username HAVING username=?",
+	// "SELECT MAX(watch_date) FROM watch w INNER JOIN (SELECT username, m_id, MAX(watch_date) AS watched FROM watch WHERE username=? GROUP BY username, m_id) a ON a.username=w.username AND a.m_id=w.m_id",
+	con.query(
+		"SELECT * FROM (SELECT MAX(watch_date) AS max_date FROM watch WHERE username=?) w JOIN watch ON w.max_date=watch.watch_date",
+		[username],
+		(err, movie) => {
+			if (err) {
+				console.log("error on latest watch ", err);
+				res.send({
+					code: 400,
+					failed: "Could not get latest watch movie",
+				});
+			} else {
+				res.send({
+					code: 200,
+					success: "Fetched latest",
+					data: movie[0],
+				});
+			}
+		}
+	);
+});
+
+app.get("/comments/:m_id", (req, res) => {
+	const { m_id } = req.params;
+	console.log("get channels for mid ", m_id);
+	con.query(
+		"SELECT * FROM Comment WHERE m_id = ?",
+		[m_id],
+		(error, comments) => {
+			if (error) {
+				console.log("error ", error);
+				res.send({
+					code: 400,
+					failed: "Cannot get channels",
+				});
+			} else {
+				console.log("channels ", comments);
+				res.send({
+					code: 200,
+					success: "Fetched all channels for user",
+					data: comments,
+				});
+			}
+		}
+	);
+});
+
+app.post("/comment", (req, res) => {
+	const { username, replied_to, comment_date, c_content, m_id } = req.body;
+	let comment_id = generateRandomID(12);
+	let values = [
+		[m_id, username, comment_id, replied_to, comment_date, c_content],
+	];
+	con.query(
+		"INSERT INTO Comment (m_id, username, comment_id, reply_to, comment_date, c_content) VALUES?",
+		[values],
+		(error) => {
+			if (error) {
+				res.send({
+					code: 400,
+					failed: "Failed to post comment",
+				});
+			} else {
+				res.send({
+					code: 200,
+					success: "Comment Posted",
+					data: comment_id,
+				});
+			}
+		}
+	);
+});
+
 let server = app.listen(5000, function () {
 	console.log("Server is running..");
 });
