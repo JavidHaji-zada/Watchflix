@@ -6,6 +6,7 @@ export class Channel {
     medias: MediaProduct[] = []
 
     constructor(details?: any) {
+        console.log('details ', details)
         if (details) {
             if (details.channel_id)
                 this._id = details.channel_id

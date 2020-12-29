@@ -57,7 +57,7 @@ function Login(): JSX.Element {
                                     setError('')
                                     setPassword(event.target.value)
                                 }}
-                                type="text" placeholder="Password" />
+                                type="password" placeholder="Password" />
                         </Form.Group>
                     </div>
                 </div>

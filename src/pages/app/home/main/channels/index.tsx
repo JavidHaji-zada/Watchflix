@@ -72,7 +72,8 @@ function Channels(): JSX.Element {
                 .then(res => {
                     res.json().then(result => {
                         console.log('result ', result)
-                        setLastMovie(new MediaProduct(result.data))
+                        if (result.data)
+                            setLastMovie(new MediaProduct(result.data))
                     })
                 })
         }
@@ -101,6 +102,7 @@ function Channels(): JSX.Element {
                     setChannelError(result.failed);
                 } else if (result.success) {
                     let channel = new Channel(result.data);
+                    console.log('channel ', channel)
                     history.replace(`/channel/${channel._id}`);
                 }
             });
@@ -111,69 +113,73 @@ function Channels(): JSX.Element {
         <div
             style={{ ...styles.container, flexDirection: "column", flexWrap: "wrap" }}
         >
-            {lastMovie && (
-                <div
-                    style={{
-                        ...styles.continueWatch,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <div>
-                        <p style={{ ...styles.channelName, fontWeight: "bold" }}>
-                            Continue Watching
+            <div
+                style={{
+                    ...styles.continueWatch,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                }}
+            >
+                {
+                    lastMovie && (
+                        <div>
+                            <p style={{ ...styles.channelName, fontWeight: "bold" }}>
+                                Continue Watching
 						</p>
-                        <button
-                            style={styles.button}
-                            onClick={() => onMoviePressed(lastMovie)}
-                        >
-                            <img
-                                style={styles.thumbnailStyle}
-                                src={lastMovie.thumbnail_url}
-                            />
-                        </button>
-                    </div>
-                    <div>
-                        <Form.Row>
-                            <Form.Group as={Col}>
-                                <InputGroup>
-                                    <InputGroup.Prepend>
-                                        <InputGroup.Text>
-                                            <FaSearch />
-                                        </InputGroup.Text>
-                                    </InputGroup.Prepend>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Search here.."
-                                        onChange={(e) => setSearch(e.target.value)}
-                                        value={search}
-                                        onSubmit={() => {
-                                            //TODO submit
-                                        }}
-                                    />
-                                </InputGroup>
-                            </Form.Group>
-                        </Form.Row>
-                        <div style={{ flexDirection: "row", display: "flex" }}>
-                            <input
-                                type="text"
-                                placeholder="Enter channel name"
-                                onChange={(e) => setChannelName(e.target.value)}
-                                value={channelName}
-                                maxLength={24}
-                                style={{ marginRight: 8, borderRadius: 6, paddingLeft: 6 }}
-                            />
-                            <Button
-                                onClick={createChannel}
-                                disabled={channelName == ""}
-                                variant="danger"
+                            <button
+                                style={styles.button}
+                                onClick={() => onMoviePressed(lastMovie)}
                             >
-                                New Channel
-							</Button>
+                                <img
+                                    style={styles.thumbnailStyle}
+                                    src={lastMovie.thumbnail_url}
+                                />
+                            </button>
+
                         </div>
+
+                    )
+                }
+                <div>
+                    <Form.Row>
+                        <Form.Group as={Col}>
+                            <InputGroup>
+                                <InputGroup.Prepend>
+                                    <InputGroup.Text>
+                                        <FaSearch />
+                                    </InputGroup.Text>
+                                </InputGroup.Prepend>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Search here.."
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    value={search}
+                                    onSubmit={() => {
+                                        //TODO submit
+                                    }}
+                                />
+                            </InputGroup>
+                        </Form.Group>
+                    </Form.Row>
+                    <div style={{ flexDirection: "row", display: "flex" }}>
+                        <input
+                            type="text"
+                            placeholder="Enter channel name"
+                            onChange={(e) => setChannelName(e.target.value)}
+                            value={channelName}
+                            maxLength={24}
+                            style={{ marginRight: 8, borderRadius: 6, paddingLeft: 6 }}
+                        />
+                        <Button
+                            onClick={createChannel}
+                            disabled={channelName == ""}
+                            variant="danger"
+                        >
+                            New Channel
+							</Button>
                     </div>
                 </div>
-            )}
+            </div>
             {channels.map((channel: Channel) => (
                 <div key={channel._id} style={{ ...styles.channelContainer, flexDirection: "column" }}>
                     <button

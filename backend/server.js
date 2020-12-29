@@ -35,16 +35,16 @@ con.connect((err) => {
 	}
 });
 
-// SQL_STATEMENTS.forEach((statement) => {
-// 	con.query(statement, (err, res) => {
-// 		if (err) {
-// 			// console.log("err ", err);
-// 			// console.log("err sql is ", statement);
-// 		} else {
-// 			// console.log("table created");
-// 		}
-// 	});
-// });
+SQL_STATEMENTS.forEach((statement) => {
+	con.query(statement, (err, res) => {
+		if (err) {
+			// console.log("err ", err);
+			// console.log("err sql is ", statement);
+		} else {
+			// console.log("table created");
+		}
+	});
+});
 
 // con.query(
 // 	"CREATE TRIGGER accept_friend AFTER INSERT ON friend" +
@@ -155,7 +155,7 @@ app.post("/new_channel", (req, res) => {
 				res.send({
 					code: 200,
 					success: "Channel creation successfull",
-					data: { _id: channel_id, name, medias: [] },
+					data: { channel_id, c_name, medias: [] },
 				});
 			}
 		}
