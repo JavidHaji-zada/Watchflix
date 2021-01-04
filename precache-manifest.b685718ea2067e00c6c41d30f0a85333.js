@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8fdbddd5b7cb88e46597a5088266cd76",
+    "revision": "b10dce88324ce08d92d2f196076ec1ae",
     "url": "/Watchflix/index.html"
   },
   {
-    "revision": "cba8c02ded9b0baa0c50",
+    "revision": "c71d97c98828371dbc0e",
     "url": "/Watchflix/static/css/2.437d98bc.chunk.css"
   },
   {
-    "revision": "b71d05d5606bde956d05",
+    "revision": "a37c35915c230284f3d1",
     "url": "/Watchflix/static/css/main.e06852af.chunk.css"
   },
   {
-    "revision": "cba8c02ded9b0baa0c50",
-    "url": "/Watchflix/static/js/2.1c55d2eb.chunk.js"
+    "revision": "c71d97c98828371dbc0e",
+    "url": "/Watchflix/static/js/2.a4d6fe5a.chunk.js"
   },
   {
     "revision": "3453b8997016469371284a28c0e873e2",
-    "url": "/Watchflix/static/js/2.1c55d2eb.chunk.js.LICENSE.txt"
+    "url": "/Watchflix/static/js/2.a4d6fe5a.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "b71d05d5606bde956d05",
-    "url": "/Watchflix/static/js/main.91d94395.chunk.js"
+    "revision": "a37c35915c230284f3d1",
+    "url": "/Watchflix/static/js/main.be735a2c.chunk.js"
   },
   {
     "revision": "13999740524f371cb78d",
@@ -38,6 +38,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "6526715bf5da2b380b32cc71a9e10829",
     "url": "/Watchflix/static/media/design.6526715b.pdf"
+  },
+  {
+    "revision": "b203257e521944b63a8ca9c38a6f7a36",
+    "url": "/Watchflix/static/media/final.b203257e.pdf"
   },
   {
     "revision": "858bb30880c89abde129df12fc6a17c3",
